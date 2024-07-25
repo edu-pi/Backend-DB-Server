@@ -1,4 +1,4 @@
-package soma.haeya.edupi_user;
+package soma.haeya.edupi_db;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'soma.haeya.edupi-user' is invalid and this project uses 'soma.haeya.edupi_user' instead.
+* The original package name 'soma.haeya.edupi-user' is invalid and this project uses 'soma.haeya.edupi_db' instead.
 
 # Getting Started
 
