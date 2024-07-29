@@ -2,12 +2,14 @@ package soma.haeya.edupi_db.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.user.domain.request.SignUpDTO;
+import soma.haeya.edupi_db.user.domain.response.SuccessResponse;
 
 @Slf4j
 @RestController
@@ -18,12 +20,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @RequestMapping(value = "save/signup", method = RequestMethod.POST)
-    public ResponseEntity<String> createPost(@RequestBody SignUpDTO signUpDTO) {
+    public ResponseEntity<SuccessResponse> createPost(@RequestBody SignUpDTO signUpDTO) {
         log.info("[User] {}", signUpDTO);
 
         memberService.saveUser(signUpDTO);
 
-        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new SuccessResponse("회원가입 성공"));
 
     }
 }
