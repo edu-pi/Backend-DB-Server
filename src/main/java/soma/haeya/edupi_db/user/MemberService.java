@@ -24,12 +24,7 @@ public class MemberService {
             throw new UserFriendlyException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
 
-        Member member = new Member();
-        member.setEmail(signUpDTO.getEmail());
-        member.setPassword(signUpDTO.getPassword());
-        member.setName(signUpDTO.getName());
-        member.setPhoneNumber(signUpDTO.getPhoneNumber());
-        member.setIs_enabled(true);
+        Member member = createMember(signUpDTO);
 
         // 저장
         try {
@@ -38,6 +33,10 @@ public class MemberService {
             // 사용자에게 반환할 에러 메시지
             throw new UserFriendlyException("데이터베이스 제약 조건 위반: " + e.getMessage());
         }
+    }
+
+    private Member createMember (SignUpDTO signUpDTO) {
+        return new Member(signUpDTO.getEmail(), signUpDTO.getPassword(), signUpDTO.getName(), signUpDTO.getPhoneNumber());
     }
 
     public List<Member> findUsers(){

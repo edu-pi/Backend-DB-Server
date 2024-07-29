@@ -21,8 +21,6 @@ public class MemberController {
 
     @RequestMapping(value = "save/signup", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> createPost(@RequestBody SignUpDTO signUpDTO) {
-        log.info("[User] {}", signUpDTO);
-
         memberService.saveUser(signUpDTO);
 
         return ResponseEntity

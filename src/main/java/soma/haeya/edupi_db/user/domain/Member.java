@@ -2,15 +2,15 @@ package soma.haeya.edupi_db.user.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", updatable = false)
@@ -34,6 +34,7 @@ public class Member {
 
     private String phoneNumber;
 
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -41,4 +42,16 @@ public class Member {
     private LocalDateTime pwdUpdatedAt;
 
     private LocalDateTime lastAccessAt;
+
+
+    public Member(){};
+    public Member(String email, String password, String name, String phoneNumber) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.is_enabled = true;
+    }
+
+
 }
