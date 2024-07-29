@@ -7,21 +7,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import soma.haeya.edupi_db.user.domain.Member;
+import soma.haeya.edupi_db.user.domain.request.SignUpDTO;
 
 @Slf4j
 @RestController
 @RequestMapping("/user/*")
 @RequiredArgsConstructor
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     @RequestMapping(value = "save/signup", method = RequestMethod.POST)
-    public ResponseEntity<String> createPost(@RequestBody Member member) {
-        userService.saveUser(member);
+    public ResponseEntity<String> createPost(@RequestBody SignUpDTO signUpDTO) {
+        log.info("[User] {}", signUpDTO);
 
-        return ResponseEntity.ok().build();
+        memberService.saveUser(signUpDTO);
+
+        return ResponseEntity.ok("회원가입이 완료되었습니다.");
 
     }
 }
