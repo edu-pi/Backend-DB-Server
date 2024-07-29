@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import soma.haeya.edupi_db.user.domain.response.ErrorResponse;
+import soma.haeya.edupi_db.user.dto.response.ErrorResponse;
 import soma.haeya.edupi_db.user.exception.UserFriendlyException;
 
 @Slf4j

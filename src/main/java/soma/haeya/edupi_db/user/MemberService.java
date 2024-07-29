@@ -5,7 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.user.domain.Member;
-import soma.haeya.edupi_db.user.domain.request.SignUpDTO;
+import soma.haeya.edupi_db.user.dto.request.SignupRequest;
 import soma.haeya.edupi_db.user.exception.UserFriendlyException;
 
 import java.util.List;
@@ -18,13 +18,13 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveUser(SignUpDTO signUpDTO){
+    public void saveUser(SignupRequest signupRequest){
         // 이메일 중복 체크
-        if (memberRepository.existsByEmail(signUpDTO.getEmail())) {
+        if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new UserFriendlyException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
 
-        Member member = createMember(signUpDTO);
+        Member member = createMember(signupRequest);
 
         // 저장
         try {
@@ -35,15 +35,15 @@ public class MemberService {
         }
     }
 
-    private Member createMember (SignUpDTO signUpDTO) {
-        return new Member(signUpDTO.getEmail(), signUpDTO.getPassword(), signUpDTO.getName(), signUpDTO.getPhoneNumber());
+    private Member createMember (SignupRequest signupRequest) {
+        return new Member(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getName(), signupRequest.getPhoneNumber());
     }
 
-    public List<Member> findUsers(){
+    public List<Member> findMembers(){
         return memberRepository.findAll();
     }
 
-    public Member findUserById(Long id) {
+    public Member findMemberById(Long id) {
         return memberRepository.findById(id).orElse(null);
     }
 

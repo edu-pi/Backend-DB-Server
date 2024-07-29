@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import soma.haeya.edupi_db.user.domain.request.SignUpDTO;
-import soma.haeya.edupi_db.user.domain.response.SuccessResponse;
+import soma.haeya.edupi_db.user.dto.request.SignupRequest;
+import soma.haeya.edupi_db.user.dto.response.SuccessResponse;
 
 @Slf4j
 @RestController
@@ -20,8 +20,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @RequestMapping(value = "save/signup", method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> createPost(@RequestBody SignUpDTO signUpDTO) {
-        memberService.saveUser(signUpDTO);
+    public ResponseEntity<SuccessResponse> createPost(@RequestBody SignupRequest signupRequest) {
+        memberService.saveUser(signupRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
