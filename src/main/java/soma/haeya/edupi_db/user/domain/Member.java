@@ -9,7 +9,17 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Member {
+
+    @Builder
+    public Member (String email, String password, String name, String phoneNumber){
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.is_enabled = true;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +44,6 @@ public class Member {
 
     private String phoneNumber;
 
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -43,15 +52,6 @@ public class Member {
 
     private LocalDateTime lastAccessAt;
 
-
-    public Member(){};
-    public Member(String email, String password, String name, String phoneNumber) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.is_enabled = true;
-    }
 
 
 }

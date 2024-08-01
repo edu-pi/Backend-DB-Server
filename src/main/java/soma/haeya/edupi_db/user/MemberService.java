@@ -18,7 +18,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveUser(SignupRequest signupRequest){
+    public void saveMember(SignupRequest signupRequest){
         // 이메일 중복 체크
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new UserFriendlyException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
@@ -35,8 +35,13 @@ public class MemberService {
         }
     }
 
-    private Member createMember (SignupRequest signupRequest) {
-        return new Member(signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getName(), signupRequest.getPhoneNumber());
+    private Member createMember(SignupRequest signupRequest){
+        return  Member.builder()
+                .email(signupRequest.getEmail())
+                .password(signupRequest.getPassword())
+                .name(signupRequest.getName())
+                .phoneNumber(signupRequest.getPhoneNumber())
+                .build();
     }
 
     public List<Member> findMembers(){

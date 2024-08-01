@@ -21,7 +21,7 @@ public class MemberController {
 
     @RequestMapping(value = "save/signup", method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> createPost(@RequestBody SignupRequest signupRequest) {
-        memberService.saveUser(signupRequest);
+        memberService.saveMember(signupRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

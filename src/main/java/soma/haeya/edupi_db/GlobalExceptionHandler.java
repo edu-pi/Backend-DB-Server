@@ -13,7 +13,7 @@ import soma.haeya.edupi_db.user.exception.UserFriendlyException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(UserFriendlyException.class)
     public ResponseEntity<ErrorResponse> handleUserFriendlyException(UserFriendlyException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         log.error("[GlobalExceptionHandler] UserFriendlyException 예외 발생 : {}", ex.getMessage());
 
         return ResponseEntity
