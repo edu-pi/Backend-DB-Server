@@ -24,24 +24,14 @@ public class MemberService {
             throw new UserFriendlyException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
 
-        Member member = createMember(signupRequest);
-
         // 저장
         try {
+            Member member = signupRequest.toEntity();
             memberRepository.save(member);
         } catch (DataIntegrityViolationException e) {
             // 사용자에게 반환할 에러 메시지
             throw new UserFriendlyException("데이터베이스 제약 조건 위반: " + e.getMessage());
         }
-    }
-
-    private Member createMember(SignupRequest signupRequest){
-        return  Member.builder()
-                .email(signupRequest.getEmail())
-                .password(signupRequest.getPassword())
-                .name(signupRequest.getName())
-                .phoneNumber(signupRequest.getPhoneNumber())
-                .build();
     }
 
     public List<Member> findMembers(){

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import soma.haeya.edupi_db.user.domain.Member;
 
 @Getter
 @ToString
@@ -25,5 +26,14 @@ public class SignupRequest
     @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
             message = "잘못된 형식입니다.")
     private String phoneNumber;
+
+    public Member toEntity(){
+        return  Member.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .build();
+    }
 }
 
