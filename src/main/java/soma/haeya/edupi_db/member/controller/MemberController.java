@@ -22,7 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/save/signup")
+    @PostMapping("/signup")
     public ResponseEntity<SuccessResponse> createPost(@RequestBody SignupRequest signupRequest) {
         memberService.saveMember(signupRequest);
 
