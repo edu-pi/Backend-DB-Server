@@ -29,15 +29,15 @@ public class Member {
     private String email;
 
     @NotNull
-    @Column(nullable = false)
     private String password;
 
     @NotNull
-    @Column(nullable = false)
     private String name;
 
     @NotNull
-    @Column(nullable = false)
+    private String role;
+
+    @NotNull
     private Boolean is_enabled;
 
     private String phoneNumber;
@@ -60,5 +60,12 @@ public class Member {
         this.is_enabled = true;
     }
 
+    public LoginResponse of() {
+        return new LoginResponse(email, name, role);
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
 
 }
