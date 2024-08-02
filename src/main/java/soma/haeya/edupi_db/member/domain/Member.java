@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import soma.haeya.edupi_db.member.dto.response.LoginResponse;
 
 @Entity
 @Getter
@@ -58,10 +57,6 @@ public class Member {
         this.role = role;
         this.phoneNumber = phoneNumber;
         this.is_enabled = true;
-    }
-
-    public LoginResponse of() {
-        return new LoginResponse(email, name, role);
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
