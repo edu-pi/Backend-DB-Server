@@ -4,14 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import soma.haeya.edupi_db.user.domain.Member;
+import lombok.Getter;
+import lombok.ToString;
 import soma.haeya.edupi_db.member.domain.Member;
 
 @Getter
 @ToString
-public class SignupRequest
-{
+public class SignupRequest {
+
     @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
     @Email(message = "잘못된 이메일 형식입니다.")
     private String email;
@@ -25,16 +25,17 @@ public class SignupRequest
     private String name;
 
     @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
-            message = "잘못된 형식입니다.")
+        message = "잘못된 형식입니다.")
     private String phoneNumber;
 
-    public Member toEntity(){
-        return  Member.builder()
-                .email(email)
-                .password(password)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .build();
+    public Member toEntity() {
+        return Member.builder()
+            .email(email)
+            .password(password)
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .role("ROLE_USER")
+            .build();
     }
 }
 

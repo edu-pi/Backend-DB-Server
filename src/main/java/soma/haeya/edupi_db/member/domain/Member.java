@@ -1,27 +1,23 @@
 package soma.haeya.edupi_db.member.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import soma.haeya.edupi_db.user.dto.request.SignupRequest;
-
 import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import soma.haeya.edupi_db.member.dto.response.LoginResponse;
 
 @Entity
 @Getter
 @NoArgsConstructor
 public class Member {
-
-
-    @Builder
-    public Member (String email, String password, String name, String phoneNumber){
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.is_enabled = true;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +50,15 @@ public class Member {
 
     private LocalDateTime lastAccessAt;
 
+    @Builder
+    public Member(String email, String password, String name, String role, String phoneNumber) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.role = role;
+        this.phoneNumber = phoneNumber;
+        this.is_enabled = true;
+    }
 
 
 }
