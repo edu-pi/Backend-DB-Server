@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
@@ -16,13 +15,13 @@ import soma.haeya.edupi_db.member.service.MemberService;
 
 @Slf4j
 @RestController
-@RequestMapping("/member")
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @RequestMapping(value = "/save/signup", method = RequestMethod.POST)
+    @PostMapping("/save/signup")
     public ResponseEntity<SuccessResponse> createPost(@RequestBody SignupRequest signupRequest) {
         memberService.saveMember(signupRequest);
 
