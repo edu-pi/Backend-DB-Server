@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.user.dto.request;
+package soma.haeya.edupi_db.member.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import soma.haeya.edupi_db.user.domain.Member;
+import soma.haeya.edupi_db.member.domain.Member;
 
 @Getter
 @ToString

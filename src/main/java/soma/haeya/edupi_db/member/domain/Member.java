@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.user.domain;
+package soma.haeya.edupi_db.member.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
