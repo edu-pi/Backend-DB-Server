@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EduPiDbApplication {
+public class EdupiDbApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EduPiDbApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EdupiDbApplication.class, args);
+    }
 
 }
