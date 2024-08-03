@@ -34,8 +34,8 @@ public class MemberController {
             .body(response);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping("/findByEmailAndPassword")
+    public ResponseEntity<LoginResponse> findMemberByEmailAndPassword(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = memberService.findMemberByEmailAndPassword(loginRequest);
 
         return ResponseEntity
