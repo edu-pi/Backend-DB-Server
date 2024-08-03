@@ -40,11 +40,14 @@ public class MemberService {
     }
 
     public LoginResponse findMemberByEmailAndPassword(LoginRequest loginRequest) {
-        Member findMember = memberRepository.findMemberByEmail(loginRequest.getEmail());
+        Member findMember = memberRepository.findMemberByEmail(loginRequest.getEmail()).orElseThrow(
+            // 이메일이 일치하지 않는 경우
+            () -> new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다.")
+        );
 
         // 비밀번호가 일치하지 않는 경우
         if (!passwordEncoder.matches(loginRequest.getPassword(), findMember.getPassword())) {
-            throw new UserFriendlyException("비밀번호가 일치하지 않습니다.");
+            throw new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다.");
         }
 
         return LoginResponse.of(findMember);
