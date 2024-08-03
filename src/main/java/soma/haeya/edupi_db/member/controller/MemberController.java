@@ -1,5 +1,6 @@
 package soma.haeya.edupi_db.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SuccessResponse> createPost(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody SignupRequest signupRequest) {
         memberService.saveMember(signupRequest);
 
         SuccessResponse response = new SuccessResponse("회원가입 성공");
@@ -34,7 +35,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = memberService.findMemberByEmailAndPassword(loginRequest);
 
         return ResponseEntity
