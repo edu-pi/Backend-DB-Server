@@ -35,7 +35,7 @@ public class MemberService {
             memberRepository.save(member);
         } catch (DataIntegrityViolationException e) {
             // 사용자에게 반환할 에러 메시지
-            throw new UserFriendlyException("데이터베이스 제약 조건 위반: " + e.getMessage());
+            throw new UserFriendlyException("데이터베이스 제약 조건 위반");
         }
     }
 
