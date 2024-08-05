@@ -107,7 +107,7 @@ class MemberServiceTest {
     void saveMemberFailDb(){
         // Given
         SignupRequest signupRequest = SignupRequest.builder()
-            .email("invalid-email")  // 유효하지 않은 이메일
+            .email("asdf@naver.com")
             .name("김미미")
             .password("qpwoeiruty00@")
             .build();
@@ -141,7 +141,7 @@ class MemberServiceTest {
         memberService.saveMember(signupRequest);
 
         // Then
-        verify(memberRepository).save(any(Member.class));
+        verify(memberRepository).save(any(Member.class));   // 호출 되었는지 검증
 
     }
 }
