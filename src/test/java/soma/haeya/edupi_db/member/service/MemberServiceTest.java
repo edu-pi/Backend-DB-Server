@@ -40,8 +40,7 @@ class MemberServiceTest {
             new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
         Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
-            .isInstanceOf(UserFriendlyException.class)
-            .hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(UserFriendlyException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
 
@@ -49,24 +48,15 @@ class MemberServiceTest {
     @DisplayName("db에 저장된 member와 다른 비밀번호를 사용해 로그인")
     void findMemberByEmailAndPasswordFailPassword() {
 
-        LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234");
+        LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "differentPassword");
 
-        when(memberRepository.findMemberByEmail(anyString())).thenReturn(
-            Optional.of(
-                Member.builder()
-                    .email("asdf@naver.com")
-                    .password("differentPassword")
-                    .role("ROLE_USER")
-                    .name("홍길동")
-                    .build())
-        );
+        when(memberRepository.findMemberByEmail(anyString())).thenReturn(Optional.of(
+            Member.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
-            new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다.")
-        );
+            new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
         Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
-            .isInstanceOf(UserFriendlyException.class)
-            .hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(UserFriendlyException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
 
@@ -74,18 +64,11 @@ class MemberServiceTest {
     @DisplayName("유효한 이메일과 비밀번호를 사용해 로그인")
     void findMemberByEmailAndPasswordSuccess() {
 
-        LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234");
+        LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
         LoginResponse expected = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
 
-        when(memberRepository.findMemberByEmail(anyString()))
-            .thenReturn(
-                Optional.of(Member.builder()
-                    .email("asdf@naver.com")
-                    .password("differentPassword")
-                    .role("ROLE_USER")
-                    .name("홍길동")
-                    .build()
-                ));
+        when(memberRepository.findMemberByEmail(anyString())).thenReturn(Optional.of(
+            Member.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
         LoginResponse result = memberService.findMemberByEmailAndPassword(loginRequest);
