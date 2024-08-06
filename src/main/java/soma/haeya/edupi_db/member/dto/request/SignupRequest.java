@@ -4,12 +4,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import soma.haeya.edupi_db.member.domain.Member;
 
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignupRequest {
 
     @NotBlank(message = "이메일은 공백이 아니어야 합니다.")

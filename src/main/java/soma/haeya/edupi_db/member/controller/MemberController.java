@@ -24,7 +24,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<SuccessResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest) {
         memberService.saveMember(signupRequest);
 
         SuccessResponse response = new SuccessResponse("회원가입 성공");
