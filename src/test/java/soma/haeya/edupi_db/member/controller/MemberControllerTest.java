@@ -2,7 +2,6 @@ package soma.haeya.edupi_db.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,9 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
@@ -44,7 +41,7 @@ class MemberControllerTest {
     void loginWithWrongEmailFormat(String email) throws Exception {
         LoginRequest loginRequest = new LoginRequest(email, "asdf1234");
 
-        mockMvc.perform(post("/member/login")
+        mockMvc.perform(post("/member/findByEmailAndPassword")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -57,7 +54,7 @@ class MemberControllerTest {
     void loginWithWrongPasswordFormat(String password) throws Exception {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", password);
 
-        mockMvc.perform(post("/member/login")
+        mockMvc.perform(post("/member/findByEmailAndPassword")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -73,7 +70,7 @@ class MemberControllerTest {
         when(memberService.findMemberByEmailAndPassword(loginRequest))
             .thenReturn(response);
 
-        mockMvc.perform(post("/member/login")
+        mockMvc.perform(post("/member/findByEmailAndPassword")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
