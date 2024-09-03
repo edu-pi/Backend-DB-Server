@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.UserFriendlyException;
+import soma.haeya.edupi_db.member.exception.InvalidInputException;
 import soma.haeya.edupi_db.member.service.MemberService;
 
 @WebMvcTest(MemberController.class)
@@ -109,7 +109,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doThrow(UserFriendlyException.class).when(memberService).saveMember(any(SignupRequest.class));
+        doThrow(InvalidInputException.class).when(memberService).saveMember(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/member/signup")
