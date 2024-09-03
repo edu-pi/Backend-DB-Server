@@ -9,7 +9,7 @@ import soma.haeya.edupi_db.member.domain.Member;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.UserFriendlyException;
+import soma.haeya.edupi_db.member.exception.InvalidInputException;
 import soma.haeya.edupi_db.member.repository.MemberRepository;
 
 @Service
@@ -24,9 +24,8 @@ public class MemberService {
     public void saveMember(SignupRequest signupRequest) {
         // 이메일 중복 체크
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new UserFriendlyException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+            throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
-
         // 저장
         try {
             Member member = signupRequest.toEntity();
@@ -35,19 +34,19 @@ public class MemberService {
             memberRepository.save(member);
         } catch (DataIntegrityViolationException e) {
             // 사용자에게 반환할 에러 메시지
-            throw new UserFriendlyException("데이터베이스 제약 조건 위반");
+            throw new InvalidInputException("데이터베이스 제약 조건 위반");
         }
     }
 
     public LoginResponse findMemberByEmailAndPassword(LoginRequest loginRequest) {
         Member findMember = memberRepository.findMemberByEmail(loginRequest.getEmail()).orElseThrow(
             // 이메일이 일치하지 않는 경우
-            () -> new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다.")
+            () -> new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다.")
         );
 
         // 비밀번호가 일치하지 않는 경우
         if (!passwordEncoder.matches(loginRequest.getPassword(), findMember.getPassword())) {
-            throw new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            throw new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다.");
         }
 
         return LoginResponse.of(findMember);
