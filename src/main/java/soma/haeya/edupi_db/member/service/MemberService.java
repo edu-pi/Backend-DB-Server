@@ -10,6 +10,7 @@ import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
 import soma.haeya.edupi_db.member.exception.InvalidInputException;
+import soma.haeya.edupi_db.member.exception.ServerException;
 import soma.haeya.edupi_db.member.repository.MemberRepository;
 
 @Service
@@ -21,20 +22,22 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void saveMember(SignupRequest signupRequest) {
+    public Long saveMember(SignupRequest signupRequest) {
         // 이메일 중복 체크
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
-        // 저장
+
         try {
             Member member = signupRequest.toEntity();
             // 비밀번호 암호화
             member.encodePassword(passwordEncoder);
-            memberRepository.save(member);
-        } catch (DataIntegrityViolationException e) {
-            // 사용자에게 반환할 에러 메시지
-            throw new InvalidInputException("데이터베이스 제약 조건 위반");
+            Member saveMember = memberRepository.save(member);
+
+            return saveMember.getId();
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new ServerException("DB 저장 실패");
         }
     }
 

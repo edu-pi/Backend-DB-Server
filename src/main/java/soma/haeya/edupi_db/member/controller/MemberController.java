@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.dto.response.SuccessResponse;
+import soma.haeya.edupi_db.member.dto.response.SignUpResponse;
 import soma.haeya.edupi_db.member.service.MemberService;
 
 @Slf4j
@@ -24,14 +24,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SuccessResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest) {
-        memberService.saveMember(signupRequest);
-
-        SuccessResponse response = new SuccessResponse("회원가입 성공");
+    public ResponseEntity<SignUpResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest) {
+        Long memberId = memberService.saveMember(signupRequest);
+        SignUpResponse signUpResponse = new SignUpResponse(memberId);
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(response);
+            .body(signUpResponse);
     }
 
     @PostMapping("/findByEmailAndPassword")
