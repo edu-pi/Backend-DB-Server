@@ -1,5 +1,9 @@
 package soma.haeya.edupi_db.member.dto.response;
 
-public record ErrorResponse(String message) {
+public class ErrorResponse {
+    String message;
 
+    public ErrorResponse(String message) {
+        this.message = message;
+    }
 }
