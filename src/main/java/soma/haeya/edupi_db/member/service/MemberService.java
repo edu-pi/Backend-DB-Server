@@ -29,8 +29,7 @@ public class MemberService {
         }
         try {
             Member member = signupRequest.toEntity();
-            // 비밀번호 암호화
-            member.encodePassword(passwordEncoder);
+            member.encodePassword(passwordEncoder); // 비밀번호 암호화
 
             return memberRepository.save(member).getId();
         }
