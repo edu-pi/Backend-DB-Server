@@ -10,7 +10,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: db-server-runner
+    runs-on: self-hosted
     environment: production
 
     steps:
