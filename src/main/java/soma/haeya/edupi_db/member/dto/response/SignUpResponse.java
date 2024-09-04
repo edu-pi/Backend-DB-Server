@@ -1,5 +1,8 @@
 package soma.haeya.edupi_db.member.dto.response;
 
+import lombok.Getter;
+
+@Getter
 public class SignUpResponse {
 
     String message;

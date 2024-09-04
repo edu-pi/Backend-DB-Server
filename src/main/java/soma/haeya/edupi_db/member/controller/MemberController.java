@@ -26,11 +26,10 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest) {
         Long memberId = memberService.saveMember(signupRequest);
-        SignUpResponse signUpResponse = new SignUpResponse(memberId);
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(signUpResponse);
+            .body(new SignUpResponse(memberId));
     }
 
     @PostMapping("/findByEmailAndPassword")

@@ -27,14 +27,12 @@ public class MemberService {
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
-
         try {
             Member member = signupRequest.toEntity();
             // 비밀번호 암호화
             member.encodePassword(passwordEncoder);
-            Member saveMember = memberRepository.save(member);
 
-            return saveMember.getId();
+            return memberRepository.save(member).getId();
         }
         catch (DataIntegrityViolationException e) {
             throw new ServerException("DB 저장 실패");
