@@ -22,7 +22,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long saveMember(SignupRequest signupRequest) {
+    public void saveMember(SignupRequest signupRequest) {
         // 이메일 중복 체크
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
@@ -31,10 +31,12 @@ public class MemberService {
             Member member = signupRequest.toEntity();
             member.encodePassword(passwordEncoder); // 비밀번호 암호화
 
-            return memberRepository.save(member).getId();
+            memberRepository.save(member);
         }
         catch (DataIntegrityViolationException e) {
             throw new ServerException("DB 저장 실패");
+        } catch (Exception e) {
+            throw new ServerException("알 수 없는 오류: " + e.getMessage());
         }
     }
 

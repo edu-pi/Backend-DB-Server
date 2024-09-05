@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.haeya.edupi_db.member.domain.Member;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
@@ -90,7 +89,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        when(memberService.saveMember(any(SignupRequest.class))).thenReturn(1L);
+        doNothing().when(memberService).saveMember(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/member/signup")
@@ -98,7 +97,6 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
-            .andExpect(jsonPath("$.memberId").isNotEmpty())
             .andExpect(jsonPath("$.message").value("회원가입이 완료되었습니다."));
     }
 
