@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.classroom.models.request;
+package soma.haeya.edupi_db.student.models.request;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
