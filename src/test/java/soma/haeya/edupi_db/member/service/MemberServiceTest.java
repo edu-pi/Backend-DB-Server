@@ -1,5 +1,6 @@
 package soma.haeya.edupi_db.member.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -15,14 +16,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.member.domain.Member;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.UserFriendlyException;
+import soma.haeya.edupi_db.member.exception.InvalidInputException;
+import soma.haeya.edupi_db.member.exception.ServerException;
 import soma.haeya.edupi_db.member.repository.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,10 +45,10 @@ class MemberServiceTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234");
 
         when(memberRepository.findMemberByEmail(anyString())).thenThrow(
-            new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다."));
+            new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
         Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
-            .isInstanceOf(UserFriendlyException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
 
@@ -60,10 +61,10 @@ class MemberServiceTest {
         when(memberRepository.findMemberByEmail(anyString())).thenReturn(Optional.of(
             Member.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
-            new UserFriendlyException("이메일 혹은 비밀번호가 일치하지 않습니다."));
+            new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
         Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
-            .isInstanceOf(UserFriendlyException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
 
@@ -97,7 +98,7 @@ class MemberServiceTest {
 
         // Then & When
         Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
-            .isInstanceOf(UserFriendlyException.class)
+            .isInstanceOf(InvalidInputException.class)
             .hasMessage("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
 
     }
@@ -112,20 +113,17 @@ class MemberServiceTest {
             .password("qpwoeiruty00@")
             .build();
 
-        // 중복 이메일 아님
-        when(memberRepository.existsByEmail(anyString())).thenReturn(false);
-
-        DataIntegrityViolationException exception = mock(DataIntegrityViolationException.class);
-        when(memberRepository.save(any(Member.class))).thenThrow(exception);
+        when(memberRepository.save(any(Member.class))).thenThrow(mock(DataIntegrityViolationException.class));
 
         // Then & When
         Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
-            .isInstanceOf(UserFriendlyException.class)
-            .hasMessage("데이터베이스 제약 조건 위반");
+            .isInstanceOf(ServerException.class)
+            .hasMessage("DB 저장 실패");
 
     }
 
     @Test
+    @Transactional
     @DisplayName("회원가입 성공")
     void saveMemberSuccess(){
         // Given
@@ -135,13 +133,17 @@ class MemberServiceTest {
             .password("addaqcww@")
             .build();
 
-        when(memberRepository.existsByEmail(signupRequest.getEmail())).thenReturn(false);
+        Member member = signupRequest.toEntity();
+
+        // `save` 메서드 호출 시 반환할 객체 설정
+        when(memberRepository.save(any(Member.class))).thenReturn(member);
 
         // When
         memberService.saveMember(signupRequest);
 
         // Then
         verify(memberRepository).save(any(Member.class));   // 호출 되었는지 검증
+
 
     }
 }

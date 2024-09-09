@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.UserFriendlyException;
+import soma.haeya.edupi_db.member.exception.InvalidInputException;
 import soma.haeya.edupi_db.member.service.MemberService;
 
 @WebMvcTest(MemberController.class)
@@ -78,7 +79,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입에 성공하면 OK를 반환한다.")
+    @DisplayName("회원가입에 성공")
     void signUpSuccess() throws Exception {
         // given
         SignupRequest signupRequest = SignupRequest.builder()
@@ -92,14 +93,15 @@ class MemberControllerTest {
 
         // When & Then
         mockMvc.perform(post("/member/signup")
-            .content(mapper.writeValueAsString(signupRequest))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+                .content(mapper.writeValueAsString(signupRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andExpect(jsonPath("$.message").value("회원가입이 완료되었습니다."));
     }
 
     @Test
-    @DisplayName("회원가입에 실패하면 BAD_REQUEST 를 반환한다.")
+    @DisplayName("회원가입에 실패 - 이메일 중복")
     void signUpFail() throws Exception {
         // given
         SignupRequest signupRequest = SignupRequest.builder()
@@ -109,7 +111,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doThrow(UserFriendlyException.class).when(memberService).saveMember(any(SignupRequest.class));
+        doThrow(InvalidInputException.class).when(memberService).saveMember(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/member/signup")
