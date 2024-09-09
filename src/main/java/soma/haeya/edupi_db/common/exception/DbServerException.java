@@ -1,14 +1,14 @@
-package soma.haeya.edupi_db.classroom.exception;
+package soma.haeya.edupi_db.common.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class NameDuplicateException extends RuntimeException {
+public class DbServerException extends RuntimeException {
 
     private final HttpStatus httpStatus;
 
-    public NameDuplicateException(HttpStatus httpStatus, String message) {
+    public DbServerException(HttpStatus httpStatus, String message) {
         super(message);
         this.httpStatus = httpStatus;
     }

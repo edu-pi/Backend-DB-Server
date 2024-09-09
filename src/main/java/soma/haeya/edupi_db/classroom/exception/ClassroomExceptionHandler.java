@@ -5,22 +5,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import soma.haeya.edupi_db.common.exception.DbServerException;
 import soma.haeya.edupi_db.common.model.response.DefaultErrorResponse;
 
 @Slf4j
 @RestControllerAdvice
 public class ClassroomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NameDuplicateException.class)
-    public ResponseEntity<DefaultErrorResponse> handleDuplicateException(NameDuplicateException exception) {
+    @ExceptionHandler(DbServerException.class)
+    public ResponseEntity<DefaultErrorResponse> handleDuplicateException(DbServerException exception) {
         printErrorLog(exception);
 
         return ResponseEntity
             .status(exception.getHttpStatus())
-            .body(new DefaultErrorResponse("중복된 이름의 클래스룸이 있습니다."));
+            .body(new DefaultErrorResponse(exception.getMessage()));
     }
 
-    private void printErrorLog(NameDuplicateException exception) {
+    private void printErrorLog(Exception exception) {
         StackTraceElement[] stackTrace = exception.getStackTrace();
         String className = stackTrace[0].getClassName();
         String methodName = stackTrace[0].getMethodName();
