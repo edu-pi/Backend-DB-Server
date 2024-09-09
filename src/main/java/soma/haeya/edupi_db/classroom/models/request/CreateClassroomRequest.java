@@ -1,16 +1,16 @@
-package soma.haeya.edupi_db.classroom.model.request;
+package soma.haeya.edupi_db.classroom.models.request;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import soma.haeya.edupi_db.classroom.domain.Classroom;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CreateClassroomRequest {
 
-    private Long userId;
-    private String name;
-    private String inviteLink;
+    private final Long userId;
+    private final String name;
+    private final String inviteLink;
 
     public Classroom toEntity() {
         return Classroom.builder()
