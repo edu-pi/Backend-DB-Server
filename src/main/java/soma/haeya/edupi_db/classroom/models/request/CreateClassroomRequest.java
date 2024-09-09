@@ -14,7 +14,7 @@ public class CreateClassroomRequest {
 
     public Classroom toEntity() {
         return Classroom.builder()
-            .userId(userId)
+            .teacherId(userId)
             .name(name)
             .inviteLink(inviteLink)
             .build();

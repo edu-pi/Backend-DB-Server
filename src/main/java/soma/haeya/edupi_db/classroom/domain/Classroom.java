@@ -24,7 +24,7 @@ public class Classroom {
     private Long id;
 
     @NotNull
-    private Long userId;
+    private Long teacherId;
 
     @NotNull
     private String name;
@@ -40,8 +40,8 @@ public class Classroom {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Classroom(Long userId, String name, String inviteLink) {
-        this.userId = userId;
+    public Classroom(Long teacherId, String name, String inviteLink) {
+        this.teacherId = teacherId;
         this.name = name;
         this.inviteLink = inviteLink;
     }

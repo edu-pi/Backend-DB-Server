@@ -14,9 +14,15 @@ public class ClassroomService {
     private final ClassroomRepository groupRepository;
 
     public void createClassroom(CreateClassroomRequest createClassroomRequest) {
-        ThrowIfDuplicate(createClassroomRequest);
 
-        groupRepository.save(createClassroomRequest.toEntity());
+        if (classroomRepository.existsByTeacherIdAndName(
+            createClassroomRequest.getUserId(),
+            createClassroomRequest.getName()
+        )) {
+            throw new DbServerException(HttpStatus.CONFLICT, "클래스룸 이름이 이미 존재합니다.");
+        }
+
+        classroomRepository.save(createClassroomRequest.toEntity());
     }
 
     private void ThrowIfDuplicate(CreateClassroomRequest createClassroomRequest) {
