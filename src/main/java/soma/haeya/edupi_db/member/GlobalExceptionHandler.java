@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db;
+package soma.haeya.edupi_db.member;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import soma.haeya.edupi_db.common.model.response.DefaultErrorResponse;
 import soma.haeya.edupi_db.member.exception.InvalidInputException;
 import soma.haeya.edupi_db.member.exception.ServerException;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = {"soma.haeya.edupi_db.member"})
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidInputException.class)
