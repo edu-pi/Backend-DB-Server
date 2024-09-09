@@ -3,7 +3,7 @@ package soma.haeya.edupi_db.classroom.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import soma.haeya.edupi_db.classroom.model.request.CreateClassroomRequest;
+import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
 import soma.haeya.edupi_db.classroom.repository.ClassroomRepository;
 import soma.haeya.edupi_db.common.exception.DbServerException;
 

@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import soma.haeya.edupi_db.common.model.response.DefaultErrorResponse;
+import soma.haeya.edupi_db.common.models.response.DefaultErrorResponse;
 import soma.haeya.edupi_db.member.exception.InvalidInputException;
 import soma.haeya.edupi_db.member.exception.ServerException;
 

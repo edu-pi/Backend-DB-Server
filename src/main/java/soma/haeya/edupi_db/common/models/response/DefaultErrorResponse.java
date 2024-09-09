@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.common.model.response;
+package soma.haeya.edupi_db.common.models.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

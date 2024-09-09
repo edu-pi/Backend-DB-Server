@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import soma.haeya.edupi_db.common.exception.DbServerException;
 import soma.haeya.edupi_db.common.exception.ExceptionLogger;
-import soma.haeya.edupi_db.common.model.response.DefaultErrorResponse;
+import soma.haeya.edupi_db.common.models.response.DefaultErrorResponse;
 
 @Slf4j
 @RestControllerAdvice(basePackages = {"soma.haeya.edupi_db.classroom"})

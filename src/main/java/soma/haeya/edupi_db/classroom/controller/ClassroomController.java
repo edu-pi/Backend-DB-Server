@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import soma.haeya.edupi_db.classroom.model.request.CreateClassroomRequest;
+import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
 import soma.haeya.edupi_db.classroom.service.ClassroomService;
 
 @RestController
