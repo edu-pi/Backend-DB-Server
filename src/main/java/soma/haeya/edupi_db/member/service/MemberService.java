@@ -34,7 +34,7 @@ public class MemberService {
             memberRepository.save(member);
         }
         catch (DataIntegrityViolationException e) {
-            throw new ServerException("DB 저장 실패");
+            throw new ServerException("DB 무결성 위반 오류: " + e.getMessage());
         } catch (Exception e) {
             throw new ServerException("알 수 없는 오류: " + e.getMessage());
         }
