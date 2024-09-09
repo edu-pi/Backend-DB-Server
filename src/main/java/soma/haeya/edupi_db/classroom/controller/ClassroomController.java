@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
+import soma.haeya.edupi_db.classroom.models.request.RegisterStudentRequest;
 import soma.haeya.edupi_db.classroom.service.ClassroomService;
 
 @RestController
@@ -14,13 +15,20 @@ import soma.haeya.edupi_db.classroom.service.ClassroomService;
 @RequestMapping("/v1/classroom")
 public class ClassroomController {
 
-    private final ClassroomService groupService;
+    private final ClassroomService classroomService;
 
     @PostMapping
     public ResponseEntity<Void> createClassroom(
         @RequestBody CreateClassroomRequest createClassroomRequest
     ) {
-        groupService.createClassroom(createClassroomRequest);
+        classroomService.createClassroom(createClassroomRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/student")
+    public ResponseEntity<Void> registerStudent(@RequestBody RegisterStudentRequest registerStudentRequest) {
+        classroomService.registerStudent(registerStudentRequest);
 
         return ResponseEntity.ok().build();
     }
