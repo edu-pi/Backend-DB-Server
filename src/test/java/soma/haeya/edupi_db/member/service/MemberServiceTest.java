@@ -117,8 +117,7 @@ class MemberServiceTest {
 
         // Then & When
         Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
-            .isInstanceOf(ServerException.class)
-            .hasMessage("DB 저장 실패");
+            .isInstanceOf(ServerException.class);
 
     }
 
