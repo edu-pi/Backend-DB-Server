@@ -19,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.member.domain.Member;
+import soma.haeya.edupi_db.member.dto.request.EmailRequest;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
@@ -85,21 +86,26 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("중복된 이메일로 회원가입 시도")
-    void saveMemberFailEmail(){
+    @DisplayName("이메일로 중복 확인")
+    void isEmailDuplicated(){
         // Given
-        SignupRequest signupRequest = SignupRequest.builder()
-            .email("invalid-email")  // 유효하지 않은 이메일
-            .name("김미미")
-            .password("qpwoeiruty00@")
-            .build();
-
-        when(memberRepository.existsByEmail(anyString())).thenReturn(true);
+        String email = "qodkcw2192@naver.com";
+        when(memberRepository.existsByEmail(email)).thenReturn(true);
 
         // Then & When
-        Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
-            .isInstanceOf(InvalidInputException.class)
-            .hasMessage("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+        Assertions.assertThat((memberService.isEmailDuplicated(email))).isEqualTo(true);
+
+    }
+
+    @Test
+    @DisplayName("이메일로 중복 확인 - 중복")
+    void isEmailDuplicatedFail(){
+        // Given
+        String email = "qodkcw2192@naver.com";
+        when(memberRepository.existsByEmail(email)).thenReturn(false);
+
+        // Then & When
+        Assertions.assertThat((memberService.isEmailDuplicated(email))).isEqualTo(false);
 
     }
 

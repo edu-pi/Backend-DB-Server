@@ -23,10 +23,6 @@ public class MemberService {
 
     @Transactional
     public void saveMember(SignupRequest signupRequest) {
-        // 이메일 중복 체크
-        if (memberRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
-        }
         try {
             Member member = signupRequest.toEntity();
             member.encodePassword(passwordEncoder); // 비밀번호 암호화
@@ -54,5 +50,9 @@ public class MemberService {
         return LoginResponse.of(findMember);
     }
 
-
+    @Transactional(readOnly = true)
+    public boolean isEmailDuplicated(String email){
+        // 이메일 중복 체크
+        return memberRepository.existsByEmail(email);
+    }
 }

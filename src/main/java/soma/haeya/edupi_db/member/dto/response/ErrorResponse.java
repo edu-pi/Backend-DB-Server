@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ErrorResponse {
-    String message;
+public class ErrorResponse extends Response{
 
     public ErrorResponse(String message) {
-        this.message = message;
+        super(message);
     }
 }
