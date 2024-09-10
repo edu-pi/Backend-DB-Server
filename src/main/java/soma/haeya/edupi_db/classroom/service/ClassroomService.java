@@ -1,10 +1,10 @@
 package soma.haeya.edupi_db.classroom.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
 import soma.haeya.edupi_db.classroom.models.response.ClassroomResponse;
 import soma.haeya.edupi_db.classroom.models.response.MyClassroomWithCountResponse;
@@ -12,6 +12,7 @@ import soma.haeya.edupi_db.classroom.repository.ClassroomRepository;
 import soma.haeya.edupi_db.common.exception.DbServerException;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ClassroomService {
 
@@ -29,7 +30,7 @@ public class ClassroomService {
         classroomRepository.save(createClassroomRequest.toEntity());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public MyClassroomWithCountResponse getMyClassrooms(Long userId) {
         if (userId == null) {
             throw new DbServerException(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.");

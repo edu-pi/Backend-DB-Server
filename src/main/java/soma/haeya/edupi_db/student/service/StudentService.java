@@ -3,12 +3,14 @@ package soma.haeya.edupi_db.student.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.classroom.repository.ClassroomRepository;
 import soma.haeya.edupi_db.common.exception.DbServerException;
 import soma.haeya.edupi_db.student.models.request.RegisterStudentRequest;
 import soma.haeya.edupi_db.student.repository.StudentRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class StudentService {
 
