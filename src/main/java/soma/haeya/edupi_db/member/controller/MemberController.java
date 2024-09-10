@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.member.dto.request.EmailRequest;
 import soma.haeya.edupi_db.member.dto.request.LoginRequest;
 import soma.haeya.edupi_db.member.dto.request.SignupRequest;
-import soma.haeya.edupi_db.member.dto.response.ErrorResponse;
 import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.dto.response.Response;
 import soma.haeya.edupi_db.member.dto.response.SignupResponse;
-import soma.haeya.edupi_db.member.dto.response.SuccessResponse;
 import soma.haeya.edupi_db.member.service.MemberService;
 
 @RestController
@@ -44,17 +41,14 @@ public class MemberController {
     }
 
     @PostMapping("/check-email")
-    public ResponseEntity<Response> isEmailDuplicated(@Valid @RequestBody EmailRequest emailRequest){
+    public ResponseEntity<Void> isEmailDuplicated(@Valid @RequestBody EmailRequest emailRequest){
         boolean isDuplicated =  memberService.isEmailDuplicated(emailRequest.getEmail());
 
         if (isDuplicated) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse("중복 이메일입니다."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         } else {
-            return ResponseEntity.ok()
-                .body(new SuccessResponse("사용 가능합니다."));
-
+            return ResponseEntity.ok().build();
         }
     }
 }
