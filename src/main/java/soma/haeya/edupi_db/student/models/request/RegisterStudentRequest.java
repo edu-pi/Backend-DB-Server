@@ -2,7 +2,7 @@ package soma.haeya.edupi_db.student.models.request;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import soma.haeya.edupi_db.classroom.domain.Student;
+import soma.haeya.edupi_db.student.domain.Student;
 
 @Getter
 @RequiredArgsConstructor

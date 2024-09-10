@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.classroom.domain;
+package soma.haeya.edupi_db.student.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
