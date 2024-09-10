@@ -1,7 +1,7 @@
 package soma.haeya.edupi_db.classroom.repository;
 
 import static soma.haeya.edupi_db.classroom.domain.QClassroom.classroom;
-import static soma.haeya.edupi_db.classroom.domain.QStudent.student;
+import static soma.haeya.edupi_db.student.domain.QStudent.student;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
