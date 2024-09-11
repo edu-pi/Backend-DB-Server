@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class MyClassroomWithCountResponse {
+public class MyClassroomsResponse {
 
     private final int classroomCount;
     private final List<ClassroomResponse> classrooms;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
 import soma.haeya.edupi_db.classroom.models.response.ClassroomResponse;
-import soma.haeya.edupi_db.classroom.models.response.MyClassroomWithCountResponse;
+import soma.haeya.edupi_db.classroom.models.response.MyClassroomsResponse;
 import soma.haeya.edupi_db.classroom.repository.ClassroomRepository;
 import soma.haeya.edupi_db.common.exception.DbServerException;
 
@@ -31,14 +31,14 @@ public class ClassroomService {
     }
 
     @Transactional(readOnly = true)
-    public MyClassroomWithCountResponse getMyClassrooms(Long userId) {
+    public MyClassroomsResponse getMyClassrooms(Long userId) {
         if (userId == null) {
             throw new DbServerException(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.");
         }
 
         List<ClassroomResponse> classrooms = classroomRepository.findAllByTeacherIdWithStudentCount(userId);
 
-        return new MyClassroomWithCountResponse(classrooms.size(), classrooms);
+        return new MyClassroomsResponse(classrooms.size(), classrooms);
     }
 
 }
