@@ -29,9 +29,9 @@ public class ClassroomController {
 
     @GetMapping
     public ResponseEntity<MyClassroomsResponse> getMyClassrooms(Long userId) {
-        MyClassroomsResponse myClassroomWithCountResponse = classroomService.getMyClassrooms(userId);
+        MyClassroomsResponse myClassroomsResponse = classroomService.getMyClassrooms(userId);
 
-        return ResponseEntity.ok(myClassroomWithCountResponse);
+        return ResponseEntity.ok(myClassroomsResponse);
     }
 
 }
