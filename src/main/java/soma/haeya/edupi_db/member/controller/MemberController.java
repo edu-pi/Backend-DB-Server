@@ -16,8 +16,8 @@ import soma.haeya.edupi_db.member.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
-public class MemberController {
+@RequestMapping("/v1/member")
+public class MemberController implements MemberSpecification {
 
     private final MemberService memberService;
 
