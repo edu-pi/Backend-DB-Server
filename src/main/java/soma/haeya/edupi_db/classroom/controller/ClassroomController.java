@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import soma.haeya.edupi_db.classroom.models.request.CreateClassroomRequest;
-import soma.haeya.edupi_db.classroom.models.response.MyClassroomWithCountResponse;
+import soma.haeya.edupi_db.classroom.models.response.MyClassroomsResponse;
 import soma.haeya.edupi_db.classroom.service.ClassroomService;
 
 @RestController
@@ -28,8 +28,8 @@ public class ClassroomController {
     }
 
     @GetMapping
-    public ResponseEntity<MyClassroomWithCountResponse> getMyClassrooms(Long userId) {
-        MyClassroomWithCountResponse myClassroomWithCountResponse = classroomService.getMyClassrooms(userId);
+    public ResponseEntity<MyClassroomsResponse> getMyClassrooms(Long userId) {
+        MyClassroomsResponse myClassroomWithCountResponse = classroomService.getMyClassrooms(userId);
 
         return ResponseEntity.ok(myClassroomWithCountResponse);
     }
