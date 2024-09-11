@@ -21,6 +21,7 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
         return queryFactory
             .select(Projections.constructor(
                 ClassroomResponse.class,
+                classroom.id,
                 classroom.name,
                 student.id.count().as("studentCount")  // 학생 수 카운트
             ))
