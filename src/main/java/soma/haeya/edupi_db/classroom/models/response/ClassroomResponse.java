@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClassroomResponse {
 
-    private final Long classroomId;
+    private final Long id;
     private final String name;
     private final Long studentCount;
 
