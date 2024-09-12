@@ -42,7 +42,7 @@ class MemberControllerTest {
     void loginWithWrongEmailFormat(String email) throws Exception {
         LoginRequest loginRequest = new LoginRequest(email, "asdf1234");
 
-        mockMvc.perform(post("/v1/member/findByEmailAndPassword")
+        mockMvc.perform(post("/v1/account/login")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -55,7 +55,7 @@ class MemberControllerTest {
     void loginWithWrongPasswordFormat(String password) throws Exception {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", password);
 
-        mockMvc.perform(post("/v1/member/findByEmailAndPassword")
+        mockMvc.perform(post("/v1/account/login")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ class MemberControllerTest {
         when(memberService.login(loginRequest))
             .thenReturn(response);
 
-        mockMvc.perform(post("/v1/member/findByEmailAndPassword")
+        mockMvc.perform(post("/v1/account/login")
             .content(mapper.writeValueAsString(loginRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -92,7 +92,7 @@ class MemberControllerTest {
         doNothing().when(memberService).saveAccount(any(SignupRequest.class));
 
         // When & Then
-        mockMvc.perform(post("/v1/member/signup")
+        mockMvc.perform(post("/v1/account/signup")
                 .content(mapper.writeValueAsString(signupRequest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class MemberControllerTest {
         doThrow(InvalidInputException.class).when(memberService).saveAccount(any(SignupRequest.class));
 
         // When & Then
-        mockMvc.perform(post("/v1/member/signup")
+        mockMvc.perform(post("/v1/account/signup")
             .content(mapper.writeValueAsString(signupRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
