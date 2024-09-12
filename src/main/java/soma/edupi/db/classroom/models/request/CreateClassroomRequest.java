@@ -8,13 +8,12 @@ import soma.edupi.db.classroom.domain.Classroom;
 @RequiredArgsConstructor
 public class CreateClassroomRequest {
 
-    private final Long userId;
+    private final Long accountId;
     private final String name;
     private final String inviteLink;
 
     public Classroom toEntity() {
         return Classroom.builder()
-            .userId(userId)
             .name(name)
             .inviteLink(inviteLink)
             .build();
