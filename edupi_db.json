@@ -15,10 +15,8 @@
       ],
       "essential": true,
       "environment": [],
-      "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
-      "ulimits": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -28,8 +26,7 @@
           "max-buffer-size": "25m",
           "awslogs-region": "ap-northeast-2",
           "awslogs-stream-prefix": "ecs"
-        },
-        "secretOptions": []
+        }
       },
       "systemControls": []
     }
@@ -38,6 +35,7 @@
   "executionRoleArn": "arn:aws:iam::590184013289:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
   "volumes": [],
+  "status": "ACTIVE",
   "placementConstraints": [],
   "requiresCompatibilities": [
     "FARGATE"
