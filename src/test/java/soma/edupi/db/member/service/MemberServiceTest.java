@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.member.service;
+package soma.edupi.db.member.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -17,14 +17,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import soma.edupi.db.member.domain.Member;
 import soma.edupi.db.member.exception.InvalidInputException;
 import soma.edupi.db.member.exception.ServerException;
 import soma.edupi.db.member.models.request.LoginRequest;
 import soma.edupi.db.member.models.request.SignupRequest;
 import soma.edupi.db.member.models.response.LoginResponse;
 import soma.edupi.db.member.repository.MemberRepository;
-import soma.edupi.db.member.service.MemberService;
-import soma.haeya.edupi_db.member.domain.Member;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {

@@ -1,4 +1,4 @@
-package soma.haeya.edupi_db.member.controller;
+package soma.edupi.db.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.edupi.db.member.controller.MemberController;
 import soma.edupi.db.member.exception.InvalidInputException;
 import soma.edupi.db.member.models.request.LoginRequest;
 import soma.edupi.db.member.models.request.SignupRequest;

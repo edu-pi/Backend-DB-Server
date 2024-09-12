@@ -17,7 +17,7 @@ import soma.edupi.db.member.service.MemberService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/member")
-public class MemberController implements MemberSpecification {
+public class MemberController {
 
     private final MemberService memberService;
 

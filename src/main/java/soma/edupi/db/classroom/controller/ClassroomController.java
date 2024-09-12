@@ -12,7 +12,7 @@ import soma.edupi.db.classroom.service.ClassroomService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/classroom")
-public class ClassroomController implements ClassroomSpecification {
+public class ClassroomController {
 
     private final ClassroomService groupService;
 
