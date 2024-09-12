@@ -16,7 +16,6 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
 
     public boolean existsLeaderClassroomByAccountIdAndName(Long accountId, String name) {
 
-        // select * from ClassroomAccount as CA where accountId = CA.accountId And CA.
         Integer fetchOne = queryFactory
             .selectOne()
             .from(classroomAccount)
