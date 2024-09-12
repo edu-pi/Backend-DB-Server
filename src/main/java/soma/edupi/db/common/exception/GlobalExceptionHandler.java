@@ -8,7 +8,7 @@ import soma.edupi.db.common.models.response.DefaultErrorResponse;
 import soma.edupi.db.member.exception.InvalidInputException;
 import soma.edupi.db.member.exception.ServerException;
 
-@ControllerAdvice(basePackages = {"soma.haeya.edupi_db.member"})
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidInputException.class)
