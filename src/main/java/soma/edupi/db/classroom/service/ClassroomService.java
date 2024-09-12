@@ -1,0 +1,30 @@
+package soma.edupi.db.classroom.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import soma.edupi.db.classroom.models.request.CreateClassroomRequest;
+import soma.edupi.db.classroom.repository.ClassroomRepository;
+import soma.edupi.db.common.exception.DbServerException;
+
+@Service
+@RequiredArgsConstructor
+public class ClassroomService {
+
+    private final ClassroomRepository groupRepository;
+
+    public void createClassroom(CreateClassroomRequest createClassroomRequest) {
+        ThrowIfDuplicate(createClassroomRequest);
+
+        groupRepository.save(createClassroomRequest.toEntity());
+    }
+
+    private void ThrowIfDuplicate(CreateClassroomRequest createClassroomRequest) {
+        if (groupRepository
+            .findByUserIdAndName(createClassroomRequest.getUserId(), createClassroomRequest.getName())
+            .isPresent()) {
+            throw new DbServerException(HttpStatus.CONFLICT, "그룹 이름이 이미 존재합니다.");
+        }
+    }
+
+}
