@@ -18,11 +18,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.haeya.edupi_db.member.dto.request.LoginRequest;
-import soma.haeya.edupi_db.member.dto.request.SignupRequest;
-import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.InvalidInputException;
-import soma.haeya.edupi_db.member.service.MemberService;
+import soma.edupi.db.member.controller.MemberController;
+import soma.edupi.db.member.exception.InvalidInputException;
+import soma.edupi.db.member.models.request.LoginRequest;
+import soma.edupi.db.member.models.request.SignupRequest;
+import soma.edupi.db.member.models.response.LoginResponse;
+import soma.edupi.db.member.service.MemberService;
 
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {

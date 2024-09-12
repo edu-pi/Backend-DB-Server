@@ -1,6 +1,5 @@
 package soma.haeya.edupi_db.member.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -18,13 +17,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import soma.edupi.db.member.exception.InvalidInputException;
+import soma.edupi.db.member.exception.ServerException;
+import soma.edupi.db.member.models.request.LoginRequest;
+import soma.edupi.db.member.models.request.SignupRequest;
+import soma.edupi.db.member.models.response.LoginResponse;
+import soma.edupi.db.member.repository.MemberRepository;
+import soma.edupi.db.member.service.MemberService;
 import soma.haeya.edupi_db.member.domain.Member;
-import soma.haeya.edupi_db.member.dto.request.LoginRequest;
-import soma.haeya.edupi_db.member.dto.request.SignupRequest;
-import soma.haeya.edupi_db.member.dto.response.LoginResponse;
-import soma.haeya.edupi_db.member.exception.InvalidInputException;
-import soma.haeya.edupi_db.member.exception.ServerException;
-import soma.haeya.edupi_db.member.repository.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -86,7 +86,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입 시도")
-    void saveMemberFailEmail(){
+    void saveMemberFailEmail() {
         // Given
         SignupRequest signupRequest = SignupRequest.builder()
             .email("invalid-email")  // 유효하지 않은 이메일
@@ -105,7 +105,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 정보 저장 중 DB 오류")
-    void saveMemberFailDb(){
+    void saveMemberFailDb() {
         // Given
         SignupRequest signupRequest = SignupRequest.builder()
             .email("asdf@naver.com")
@@ -124,7 +124,7 @@ class MemberServiceTest {
     @Test
     @Transactional
     @DisplayName("회원가입 성공")
-    void saveMemberSuccess(){
+    void saveMemberSuccess() {
         // Given
         SignupRequest signupRequest = SignupRequest.builder()
             .email("jakdiv@naver.com")  // 유효하지 않은 이메일
