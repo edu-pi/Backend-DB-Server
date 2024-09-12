@@ -1,4 +1,4 @@
-package soma.edupi.db.member.service;
+package soma.edupi.db.account.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -17,25 +17,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupi.db.member.domain.Member;
-import soma.edupi.db.member.exception.InvalidInputException;
-import soma.edupi.db.member.exception.ServerException;
-import soma.edupi.db.member.models.request.LoginRequest;
-import soma.edupi.db.member.models.request.SignupRequest;
-import soma.edupi.db.member.models.response.LoginResponse;
-import soma.edupi.db.member.repository.MemberRepository;
+import soma.edupi.db.account.domain.Account;
+import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.exception.ServerException;
+import soma.edupi.db.account.models.request.LoginRequest;
+import soma.edupi.db.account.models.request.SignupRequest;
+import soma.edupi.db.account.models.response.LoginResponse;
+import soma.edupi.db.account.repository.AccountRepository;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
     @Mock
-    private MemberRepository memberRepository;
+    private AccountRepository memberRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private MemberService memberService;
+    private AccountService memberService;
 
     @Test
     @DisplayName("db에 저장되지 않은 이메일을 사용해 로그인")
@@ -46,7 +46,7 @@ class MemberServiceTest {
         when(memberRepository.findMemberByEmail(anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
+        Assertions.assertThatThrownBy(() -> memberService.login(loginRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -58,11 +58,11 @@ class MemberServiceTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "differentPassword");
 
         when(memberRepository.findMemberByEmail(anyString())).thenReturn(Optional.of(
-            Member.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
+            Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> memberService.findMemberByEmailAndPassword(loginRequest))
+        Assertions.assertThatThrownBy(() -> memberService.login(loginRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -75,10 +75,10 @@ class MemberServiceTest {
         LoginResponse expected = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
 
         when(memberRepository.findMemberByEmail(anyString())).thenReturn(Optional.of(
-            Member.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
+            Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        LoginResponse result = memberService.findMemberByEmailAndPassword(loginRequest);
+        LoginResponse result = memberService.login(loginRequest);
 
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -96,7 +96,7 @@ class MemberServiceTest {
         when(memberRepository.existsByEmail(anyString())).thenReturn(true);
 
         // Then & When
-        Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
+        Assertions.assertThatThrownBy(() -> memberService.saveAccount(signupRequest))
             .isInstanceOf(InvalidInputException.class)
             .hasMessage("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
 
@@ -112,10 +112,10 @@ class MemberServiceTest {
             .password("qpwoeiruty00@")
             .build();
 
-        when(memberRepository.save(any(Member.class))).thenThrow(mock(DataIntegrityViolationException.class));
+        when(memberRepository.save(any(Account.class))).thenThrow(mock(DataIntegrityViolationException.class));
 
         // Then & When
-        Assertions.assertThatThrownBy(() -> memberService.saveMember(signupRequest))
+        Assertions.assertThatThrownBy(() -> memberService.saveAccount(signupRequest))
             .isInstanceOf(ServerException.class);
 
     }
@@ -131,16 +131,16 @@ class MemberServiceTest {
             .password("addaqcww@")
             .build();
 
-        Member member = signupRequest.toEntity();
+        Account member = signupRequest.toEntity();
 
         // `save` 메서드 호출 시 반환할 객체 설정
-        when(memberRepository.save(any(Member.class))).thenReturn(member);
+        when(memberRepository.save(any(Account.class))).thenReturn(member);
 
         // When
-        memberService.saveMember(signupRequest);
+        memberService.saveAccount(signupRequest);
 
         // Then
-        verify(memberRepository).save(any(Member.class));   // 호출 되었는지 검증
+        verify(memberRepository).save(any(Account.class));   // 호출 되었는지 검증
 
 
     }

@@ -1,4 +1,4 @@
-package soma.edupi.db.member.models.request;
+package soma.edupi.db.account.models.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

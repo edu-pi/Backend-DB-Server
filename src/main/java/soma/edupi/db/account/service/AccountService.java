@@ -1,34 +1,34 @@
-package soma.edupi.db.member.service;
+package soma.edupi.db.account.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupi.db.member.domain.Member;
-import soma.edupi.db.member.exception.InvalidInputException;
-import soma.edupi.db.member.exception.ServerException;
-import soma.edupi.db.member.models.request.LoginRequest;
-import soma.edupi.db.member.models.request.SignupRequest;
-import soma.edupi.db.member.models.response.LoginResponse;
-import soma.edupi.db.member.repository.MemberRepository;
+import soma.edupi.db.account.domain.Account;
+import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.exception.ServerException;
+import soma.edupi.db.account.models.request.LoginRequest;
+import soma.edupi.db.account.models.request.SignupRequest;
+import soma.edupi.db.account.models.response.LoginResponse;
+import soma.edupi.db.account.repository.AccountRepository;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MemberService {
+public class AccountService {
 
-    private final MemberRepository memberRepository;
+    private final AccountRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void saveMember(SignupRequest signupRequest) {
+    public void saveAccount(SignupRequest signupRequest) {
         // 이메일 중복 체크
         if (memberRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidInputException("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
         }
         try {
-            Member member = signupRequest.toEntity();
+            Account member = signupRequest.toEntity();
             member.encodePassword(passwordEncoder); // 비밀번호 암호화
 
             memberRepository.save(member);
@@ -39,8 +39,8 @@ public class MemberService {
         }
     }
 
-    public LoginResponse findMemberByEmailAndPassword(LoginRequest loginRequest) {
-        Member findMember = memberRepository.findMemberByEmail(loginRequest.getEmail()).orElseThrow(
+    public LoginResponse login(LoginRequest loginRequest) {
+        Account findMember = memberRepository.findMemberByEmail(loginRequest.getEmail()).orElseThrow(
             // 이메일이 일치하지 않는 경우
             () -> new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다.")
         );
@@ -52,6 +52,5 @@ public class MemberService {
 
         return LoginResponse.of(findMember);
     }
-
 
 }

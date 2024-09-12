@@ -1,4 +1,4 @@
-package soma.edupi.db.member.models.response;
+package soma.edupi.db.account.models.response;
 
 import lombok.Getter;
 

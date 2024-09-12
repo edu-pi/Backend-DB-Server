@@ -1,4 +1,4 @@
-package soma.edupi.db.member.domain;
+package soma.edupi.db.account.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +50,7 @@ public class Member {
     private LocalDateTime lastAccessAt;
 
     @Builder
-    public Member(String email, String password, String name, String role, String phoneNumber) {
+    public Account(String email, String password, String name, String role, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.name = name;

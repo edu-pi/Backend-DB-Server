@@ -1,4 +1,4 @@
-package soma.edupi.db.member.controller;
+package soma.edupi.db.account.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -18,13 +18,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.edupi.db.member.exception.InvalidInputException;
-import soma.edupi.db.member.models.request.LoginRequest;
-import soma.edupi.db.member.models.request.SignupRequest;
-import soma.edupi.db.member.models.response.LoginResponse;
-import soma.edupi.db.member.service.MemberService;
+import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.models.request.LoginRequest;
+import soma.edupi.db.account.models.request.SignupRequest;
+import soma.edupi.db.account.models.response.LoginResponse;
+import soma.edupi.db.account.service.AccountService;
 
-@WebMvcTest(MemberController.class)
+@WebMvcTest(AccountController.class)
 class MemberControllerTest {
 
     @Autowired
@@ -34,7 +34,7 @@ class MemberControllerTest {
     ObjectMapper mapper;
 
     @MockBean
-    MemberService memberService;
+    AccountService memberService;
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "asdf", "asdf@naver", "asdf.com"})
@@ -68,7 +68,7 @@ class MemberControllerTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
         LoginResponse response = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
 
-        when(memberService.findMemberByEmailAndPassword(loginRequest))
+        when(memberService.login(loginRequest))
             .thenReturn(response);
 
         mockMvc.perform(post("/v1/member/findByEmailAndPassword")
@@ -89,7 +89,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doNothing().when(memberService).saveMember(any(SignupRequest.class));
+        doNothing().when(memberService).saveAccount(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/member/signup")
@@ -111,7 +111,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doThrow(InvalidInputException.class).when(memberService).saveMember(any(SignupRequest.class));
+        doThrow(InvalidInputException.class).when(memberService).saveAccount(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/member/signup")

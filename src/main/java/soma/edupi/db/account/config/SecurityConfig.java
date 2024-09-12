@@ -1,4 +1,4 @@
-package soma.edupi.db.member.config;
+package soma.edupi.db.account.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package soma.edupi.db.member.models.request;
+package soma.edupi.db.account.models.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import soma.edupi.db.member.domain.Member;
+import soma.edupi.db.account.domain.Account;
 
 @Getter
 @ToString
@@ -33,8 +33,8 @@ public class SignupRequest {
         message = "잘못된 형식입니다.")
     private String phoneNumber;
 
-    public Member toEntity() {
-        return Member.builder()
+    public Account toEntity() {
+        return Account.builder()
             .email(email)
             .password(password)
             .name(name)

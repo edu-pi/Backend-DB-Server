@@ -1,4 +1,4 @@
-package soma.edupi.db.member.exception;
+package soma.edupi.db.account.exception;
 
 import lombok.Getter;
 
