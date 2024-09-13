@@ -20,7 +20,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id", updatable = false)
+    @Column(name = "account_id", updatable = false)
     private Long id;
 
     @NotNull
