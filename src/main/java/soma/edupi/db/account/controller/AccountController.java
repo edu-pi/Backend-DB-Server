@@ -22,7 +22,7 @@ public class AccountController implements AccountSpecification {
     private final AccountService accountService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
         accountService.saveAccount(signupRequest);
 
         return ResponseEntity

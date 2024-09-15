@@ -22,7 +22,7 @@ public interface AccountSpecification {
         @ApiResponse(responseCode = "400", description = "중복된 이메일입니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "500", description = "DB 무결성 위반 오류", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<SignupResponse> saveMember(@Valid @RequestBody SignupRequest signupRequest);
+    ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest);
 
 
     @Operation(summary = "유저 토큰 조회", description = "존재하는 토큰인지 조회하는 API")
