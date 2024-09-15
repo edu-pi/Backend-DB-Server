@@ -13,9 +13,9 @@ import soma.edupi.db.classroom.models.request.CreateClassroomRequest;
 @Tag(name = "Classroom", description = "Classroom API")
 public interface ClassroomSpecification {
 
-    @Operation(summary = "그룹 생성", description = "사용자가 입력한 그룹 정보를 DB에 저장하는 API")
+    @Operation(summary = "클래스룸 생성", description = "사용자가 입력한 클래스룸 정보를 DB에 저장하는 API")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "그룹 생성이 완료되었습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "200", description = "클래스룸 생성이 완료되었습니다.", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<Classroom> createClassroom(@RequestBody CreateClassroomRequest createClassroomRequest);
 }

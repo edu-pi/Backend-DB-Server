@@ -14,17 +14,18 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public boolean existsLeaderClassroomByAccountIdAndName(Long accountId, String name) {
+    public boolean existsHostClassroomByAccountIdAndName(Long accountId, String name) {
 
         Integer fetchOne = queryFactory
             .selectOne()
             .from(classroomAccount)
             .leftJoin(classroom)
+            .on(classroomAccount.accountId.eq(classroom.id))
             .where(
                 classroomAccount.accountId.eq(accountId),
-                classroomAccount.role.eq(ClassroomAccountRole.ROLE_LEADER)
+                classroomAccount.role.eq(ClassroomAccountRole.ROLE_HOST),
+                classroom.name.eq(name)
             )
-            .having(classroom.name.eq(name))
             .fetchFirst();
 
         return fetchOne != null;

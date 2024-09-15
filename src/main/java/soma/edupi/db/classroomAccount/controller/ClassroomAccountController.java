@@ -20,11 +20,12 @@ public class ClassroomAccountController {
     private final ClassroomAccountService classroomAccountService;
 
     @PostMapping
-    public ResponseEntity<ClassroomAccount> create(
-        @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest) {
-        ClassroomAccount follower = classroomAccountService.createFollower(createClassroomAccountRequest);
+    public ResponseEntity<ClassroomAccount> registerGuest(
+        @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest
+    ) {
+        ClassroomAccount guest = classroomAccountService.registerGuest(createClassroomAccountRequest);
 
-        return ResponseEntity.ok().body(follower);
+        return ResponseEntity.ok().body(guest);
     }
 
 }
