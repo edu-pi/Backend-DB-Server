@@ -21,6 +21,7 @@ public class AccountController implements AccountSpecification {
 
     private final AccountService accountService;
 
+    @Override
     @PostMapping("/signup")
     public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
         accountService.saveAccount(signupRequest);
@@ -30,6 +31,7 @@ public class AccountController implements AccountSpecification {
             .body(new SignupResponse());
     }
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = accountService.login(loginRequest);

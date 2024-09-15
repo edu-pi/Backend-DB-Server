@@ -17,6 +17,7 @@ public class ClassroomController implements ClassroomSpecification {
 
     private final ClassroomService groupService;
 
+    @Override
     @PostMapping
     public ResponseEntity<Classroom> createClassroom(
         @RequestBody CreateClassroomRequest createClassroomRequest
