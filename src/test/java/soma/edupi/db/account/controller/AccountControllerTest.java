@@ -25,7 +25,7 @@ import soma.edupi.db.account.models.response.LoginResponse;
 import soma.edupi.db.account.service.AccountService;
 
 @WebMvcTest(AccountController.class)
-class MemberControllerTest {
+class AccountControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -34,7 +34,7 @@ class MemberControllerTest {
     ObjectMapper mapper;
 
     @MockBean
-    AccountService memberService;
+    AccountService accountService;
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "asdf", "asdf@naver", "asdf.com"})
@@ -68,7 +68,7 @@ class MemberControllerTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
         LoginResponse response = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
 
-        when(memberService.login(loginRequest))
+        when(accountService.login(loginRequest))
             .thenReturn(response);
 
         mockMvc.perform(post("/v1/account/login")
@@ -80,7 +80,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원가입에 성공")
-    void signUpSuccess() throws Exception {
+    void signupSuccess() throws Exception {
         // given
         SignupRequest signupRequest = SignupRequest.builder()
             .email("aabbcc@naver.com")
@@ -89,7 +89,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doNothing().when(memberService).saveAccount(any(SignupRequest.class));
+        doNothing().when(accountService).saveAccount(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/account/signup")
@@ -102,7 +102,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원가입에 실패 - 이메일 중복")
-    void signUpFail() throws Exception {
+    void signupFail() throws Exception {
         // given
         SignupRequest signupRequest = SignupRequest.builder()
             .email("aabbcc@naver.com")
@@ -111,7 +111,7 @@ class MemberControllerTest {
             .build();
 
         // Mocking
-        doThrow(InvalidInputException.class).when(memberService).saveAccount(any(SignupRequest.class));
+        doThrow(InvalidInputException.class).when(accountService).saveAccount(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/account/signup")
