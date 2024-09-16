@@ -45,7 +45,7 @@ class AccountServiceTest {
         when(accountRepository.findAccountByEmail(anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> accountService.login(loginRequest))
+        Assertions.assertThatThrownBy(() -> accountService.findAccountByEmail(loginRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -61,7 +61,7 @@ class AccountServiceTest {
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> accountService.login(loginRequest))
+        Assertions.assertThatThrownBy(() -> accountService.findAccountByEmail(loginRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -77,7 +77,7 @@ class AccountServiceTest {
             Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        LoginResponse result = accountService.login(loginRequest);
+        LoginResponse result = accountService.findAccountByEmail(loginRequest);
 
         Assertions.assertThat(result).isEqualTo(expected);
     }

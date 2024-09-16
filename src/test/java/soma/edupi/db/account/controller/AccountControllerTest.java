@@ -68,7 +68,7 @@ class AccountControllerTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
         LoginResponse response = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
 
-        when(accountService.login(loginRequest))
+        when(accountService.findAccountByEmail(loginRequest))
             .thenReturn(response);
 
         mockMvc.perform(post("/v1/account/login")
