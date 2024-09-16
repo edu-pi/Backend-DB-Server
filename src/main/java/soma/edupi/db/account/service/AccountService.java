@@ -31,7 +31,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse findAccountByEmail(LoginRequest loginRequest) {
         Account findAccount = accountRepository.findAccountByEmail(loginRequest.getEmail()).orElseThrow(
             // 이메일이 일치하지 않는 경우
             () -> new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다.")

@@ -23,7 +23,7 @@ public class AccountController implements AccountSpecification {
 
     @Override
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<SignupResponse> saveAccount(@Valid @RequestBody SignupRequest signupRequest) {
         accountService.saveAccount(signupRequest);
 
         return ResponseEntity
@@ -33,8 +33,8 @@ public class AccountController implements AccountSpecification {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = accountService.login(loginRequest);
+    public ResponseEntity<LoginResponse> findAccountByEmail(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = accountService.findAccountByEmail(loginRequest);
 
         return ResponseEntity
             .status(HttpStatus.OK)
