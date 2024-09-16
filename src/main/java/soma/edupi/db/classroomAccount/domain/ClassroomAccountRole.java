@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ClassroomAccountRole {
 
-    ROLE_HOST(1, "호스트"),
-    ROLE_GUEST(2, "게스트");
+    ROLE_HOST(1),
+    ROLE_GUEST(2);
 
     private final int code;
-    private final String name;
 
 }
