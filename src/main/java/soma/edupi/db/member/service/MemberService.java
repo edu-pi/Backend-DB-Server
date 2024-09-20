@@ -56,7 +56,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void activateAccount(EmailRequest emailRequest) {
+    public Member activateAccount(EmailRequest emailRequest) {
         // 이메일이 일치하는 유저 찾기
         Member findMember = memberRepository.findMemberByEmail(emailRequest.getEmail())
             .orElseThrow(() -> {
@@ -66,8 +66,9 @@ public class MemberService {
             );
         // 계정 활성
         findMember.activate();
-        // DB 동기화
         memberRepository.save(findMember);
+
+        return findMember;
     }
 
 
