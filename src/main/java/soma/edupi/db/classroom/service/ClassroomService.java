@@ -22,9 +22,7 @@ public class ClassroomService {
 
     public Classroom createClassroom(CreateClassroomRequest createClassroomRequest) {
         // AccountId가 같고 Leader로 참여한 classroom 중에 name이 일치하는 것이 있으면
-        if (classroomRepository.existsHostClassroomByAccountIdAndName(
-            createClassroomRequest.getAccountId(), createClassroomRequest.getName())
-        ) {
+        if (isDuplicatedClassroomName(createClassroomRequest)) {
             throw new AlreadyExistsException("이미 해당 이름의 클래스룸이 존재합니다.");
         }
 
@@ -43,4 +41,13 @@ public class ClassroomService {
         return savedClassroom;
     }
 
+    private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
+        return classroomRepository.existsHostClassroomByAccountIdAndName(
+            createClassroomRequest.getAccountId(),
+            createClassroomRequest.getName()
+        );
+    }
+
 }
+
+
