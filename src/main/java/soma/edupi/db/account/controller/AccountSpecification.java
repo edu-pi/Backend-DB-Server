@@ -36,7 +36,7 @@ public interface AccountSpecification {
 
     @Operation(summary = "계정 활성화", description = "사용자가 이메일 인증 후 계정을 활성화 하는 API")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "계정 활성호 성공", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "200", description = "계정 활성화 성공", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "존재하지 않는 이메일", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<Void> activateAccount(@Valid @RequestBody EmailRequest emailRequest);
