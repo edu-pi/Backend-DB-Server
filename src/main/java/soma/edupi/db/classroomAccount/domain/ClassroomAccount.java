@@ -1,4 +1,4 @@
-package soma.edupi.db.classroom.domain;
+package soma.edupi.db.classroomAccount.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,37 +8,36 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Getter
 @NoArgsConstructor
-public class Classroom {
+public class ClassroomAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "classroom_id", updatable = false)
+    @Column(name = "classroom_account_id", updatable = false)
     private Long id;
 
     @NotNull
-    private String name;
+    private Long accountId;
 
     @NotNull
-    private String inviteLink;
+    private Long classroomId;
+
+    @NotNull
+    private ClassroomAccountRole role;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
     @Builder
-    public Classroom(String name, String inviteLink) {
-        this.name = name;
-        this.inviteLink = inviteLink;
+    public ClassroomAccount(Long accountId, Long classroomId, ClassroomAccountRole role) {
+        this.accountId = accountId;
+        this.classroomId = classroomId;
+        this.role = role;
     }
+
 }

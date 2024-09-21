@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.exception.ServerException;
 import soma.edupi.db.common.models.response.DefaultErrorResponse;
-import soma.edupi.db.member.exception.InvalidInputException;
-import soma.edupi.db.member.exception.ServerException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
