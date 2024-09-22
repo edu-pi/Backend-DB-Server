@@ -60,7 +60,7 @@ public class MemberService {
         // 이메일이 일치하는 유저 찾기
         Member findMember = memberRepository.findMemberByEmail(emailRequest.getEmail())
             .orElseThrow(() -> {
-                    log.info("이메일 인증 실패, 함수 = activateAccount, 이메일 = {} ", emailRequest.getEmail());
+                    log.info("email activateAccount fail, email = {} ", emailRequest.getEmail());
                     return new InvalidInputException("존재하지 않는 회원입니다.");
                 }
             );
