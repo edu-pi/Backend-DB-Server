@@ -1,15 +1,15 @@
 package soma.edupi.db.account.models.request;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class EmailRequest {
 
-    private final String email;
+    private String email;
 
-    @JsonCreator
     public EmailRequest(@JsonProperty("email") String email) {
         this.email = email;
     }
