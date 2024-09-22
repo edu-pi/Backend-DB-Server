@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import soma.edupi.db.member.models.request.EmailRequest;
 import soma.edupi.db.member.models.request.LoginRequest;
 import soma.edupi.db.member.models.request.SignupRequest;
+import soma.edupi.db.member.models.response.AccountActivateResponse;
 import soma.edupi.db.member.models.response.LoginResponse;
 import soma.edupi.db.member.models.response.SignupResponse;
 import soma.edupi.db.member.service.MemberService;
@@ -43,11 +44,12 @@ public class MemberController implements MemberSpecification {
     }
 
     @PostMapping("/activate")
-    public ResponseEntity<Void> activateAccount(@Valid @RequestBody EmailRequest emailRequest) {
-        memberService.activateAccount(emailRequest);
+    public ResponseEntity<AccountActivateResponse> activateAccount(@Valid @RequestBody EmailRequest emailRequest) {
+        String email = memberService.activateAccount(emailRequest);
         log.info("이메일 인증 완료, 이메일 = {} ", emailRequest.getEmail());
 
         return ResponseEntity
-            .status(HttpStatus.OK).build();
+            .status(HttpStatus.OK)
+            .body(new AccountActivateResponse(email));
     }
 }

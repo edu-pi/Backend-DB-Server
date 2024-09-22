@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import soma.edupi.db.account.models.request.EmailRequest;
 import soma.edupi.db.account.models.request.LoginRequest;
 import soma.edupi.db.account.models.request.SignupRequest;
+import soma.edupi.db.account.models.response.AccountActivateResponse;
 import soma.edupi.db.account.models.response.LoginResponse;
 import soma.edupi.db.account.models.response.SignupResponse;
 
@@ -39,5 +40,5 @@ public interface AccountSpecification {
         @ApiResponse(responseCode = "200", description = "계정 활성화 성공", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "존재하지 않는 이메일", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<Void> activateAccount(@Valid @RequestBody EmailRequest emailRequest);
+    ResponseEntity<AccountActivateResponse> activateAccount(@Valid @RequestBody EmailRequest emailRequest);
 }
