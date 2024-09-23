@@ -8,11 +8,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
-import soma.edupimeta.account.models.SignupRequest;
-import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.LoginResponse;
+import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.models.SignupResponse;
 
 
@@ -33,7 +33,7 @@ public interface AccountOpenApi {
         @ApiResponse(responseCode = "200", description = "토큰 정보 조회 성공", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "이메일 혹은 비밀번호가 일치하지 않습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<LoginResponse> findAccountByEmail(@Valid @RequestBody LoginRequest loginRequest);
+    ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest);
 
     @Operation(summary = "계정 활성화", description = "사용자가 이메일 인증 후 계정을 활성화 하는 API")
     @ApiResponses(value = {

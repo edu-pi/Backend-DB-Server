@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
@@ -37,7 +38,7 @@ public class Account {
     private String role;
 
     @NotNull
-    private Boolean is_enabled;
+    private Boolean isEnabled;
 
     private String phoneNumber;
 
@@ -56,15 +57,20 @@ public class Account {
         this.name = name;
         this.role = role;
         this.phoneNumber = phoneNumber;
-        this.is_enabled = false;
+        this.isEnabled = false;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
 
+    public void encodePassword() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(this.password);
+    }
+
     public void activate() {
-        this.is_enabled = true;
+        this.isEnabled = true;
     }
 
 }
