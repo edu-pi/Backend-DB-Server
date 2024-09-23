@@ -17,23 +17,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-<<<<<<< HEAD:src/test/java/soma/edupi/db/account/service/AccountServiceTest.java
 import soma.edupi.db.account.domain.Account;
 import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.models.request.EmailRequest;
 import soma.edupi.db.account.models.request.LoginRequest;
 import soma.edupi.db.account.models.request.SignupRequest;
 import soma.edupi.db.account.models.response.LoginResponse;
 import soma.edupi.db.account.repository.AccountRepository;
-=======
-import soma.edupi.db.member.domain.Member;
-import soma.edupi.db.member.exception.InvalidInputException;
-import soma.edupi.db.member.exception.ServerException;
-import soma.edupi.db.member.models.request.EmailRequest;
-import soma.edupi.db.member.models.request.LoginRequest;
-import soma.edupi.db.member.models.request.SignupRequest;
-import soma.edupi.db.member.models.response.LoginResponse;
-import soma.edupi.db.member.repository.MemberRepository;
->>>>>>> 4ce4b4b ([#30]feat: 계정 활성화 테스트, swagger 명세):src/test/java/soma/edupi/db/member/service/MemberServiceTest.java
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -82,17 +72,17 @@ class AccountServiceTest {
     void activateAccountSuccess() {
         // given
         EmailRequest emailRequest = new EmailRequest("test@naver.com");
-        Member mockMember = mock(Member.class);
+        Account mockMember = mock(Account.class);
 
-        when(memberRepository.findMemberByEmail(anyString()))
+        when(accountRepository.findAccountByEmail(anyString()))
             .thenReturn(Optional.of(mockMember));
 
         // When
-        memberService.activateAccount(emailRequest);
+        accountService.activateAccount(emailRequest);
 
         // Then
         verify(mockMember).activate();  // activate 메소드 호출 검증
-        verify(memberRepository).save(mockMember);  // save 호출 검증
+        verify(accountRepository).save(mockMember);  // save 호출 검증
     }
 
     @Test
@@ -101,11 +91,11 @@ class AccountServiceTest {
         // given
         EmailRequest emailRequest = new EmailRequest("test@naver.com");
 
-        when(memberRepository.findMemberByEmail(anyString()))
+        when(accountRepository.findAccountByEmail(anyString()))
             .thenReturn(Optional.empty());
 
         // When & Then
-        Assertions.assertThatThrownBy(() -> memberService.activateAccount(emailRequest))
+        Assertions.assertThatThrownBy(() -> accountService.activateAccount(emailRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("존재하지 않는 회원입니다.");
     }
 
