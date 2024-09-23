@@ -7,4 +7,6 @@ import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 @Repository
 public interface ClassroomAccountRepository extends JpaRepository<ClassroomAccount, Long> {
 
+    boolean existsByAccountIdAndClassroomId(Long accountId, Long classroomId);
+
 }

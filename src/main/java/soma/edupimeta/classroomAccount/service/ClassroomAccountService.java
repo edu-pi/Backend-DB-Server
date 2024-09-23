@@ -16,8 +16,11 @@ public class ClassroomAccountService {
     private final ClassroomRepository classroomRepository;
 
     public ClassroomAccount registerGuest(Long accountId, Long classroomId) {
-        // TODO: 조인
-        if (isDuplicate(classroomId)) {
+        if (isExistsClassroom(classroomId)) {
+            throw new IllegalArgumentException("해당 클래스룸이 존재하지 않습니다.");
+        }
+
+        if (isDuplicate(accountId, classroomId)) {
             throw new AlreadyExistsException("이미 등록된 계정입니다.");
         }
 
@@ -30,8 +33,12 @@ public class ClassroomAccountService {
         return addClassroomAccount(classroomAccount);
     }
 
-    private boolean isDuplicate(Long classroomId) {
+    private boolean isExistsClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
+    }
+
+    private boolean isDuplicate(Long accountId, Long classroomId) {
+        return !classroomAccountRepository.existsByAccountIdAndClassroomId(accountId, classroomId);
     }
 
     private ClassroomAccount addClassroomAccount(ClassroomAccount classroomAccount) {
