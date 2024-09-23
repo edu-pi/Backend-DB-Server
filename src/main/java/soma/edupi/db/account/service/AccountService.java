@@ -59,7 +59,6 @@ public class AccountService {
             );
         // 계정 활성
         account.activate();
-        accountRepository.save(account);
 
         return account.getEmail();
     }
