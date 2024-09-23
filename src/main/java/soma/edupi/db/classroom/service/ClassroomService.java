@@ -1,15 +1,20 @@
 package soma.edupi.db.classroom.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupi.db.classroom.domain.Classroom;
 import soma.edupi.db.classroom.models.request.CreateClassroomRequest;
+import soma.edupi.db.classroom.models.response.ClassroomResponse;
+import soma.edupi.db.classroom.models.response.MyClassroomsResponse;
 import soma.edupi.db.classroom.repository.ClassroomRepository;
 import soma.edupi.db.classroomAccount.domain.ClassroomAccount;
 import soma.edupi.db.classroomAccount.domain.ClassroomAccountRole;
 import soma.edupi.db.classroomAccount.repository.ClassroomAccountRepository;
 import soma.edupi.db.common.exception.AlreadyExistsException;
+import soma.edupi.db.common.exception.DbServerException;
 
 @Service
 @Transactional
@@ -39,6 +44,17 @@ public class ClassroomService {
         classroomAccountRepository.save(classroomAccount);
 
         return savedClassroom;
+    }
+
+    @Transactional(readOnly = true)
+    public MyClassroomsResponse getMyClassrooms(Long accountId) {
+        if (accountId == null) {
+            throw new DbServerException(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.");
+        }
+
+        List<ClassroomResponse> classrooms = classroomRepository.findAllByAccountIdWithGuestCount(accountId);
+
+        return new MyClassroomsResponse(classrooms.size(), classrooms);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
