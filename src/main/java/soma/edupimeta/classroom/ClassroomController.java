@@ -30,6 +30,7 @@ public class ClassroomController implements ClassroomOpenApi {
             .body(classroom);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<MyClassroomsResponse> getMyClassrooms(Long accountId) {
         MyClassroomsResponse myClassroomsResponse = classroomService.getMyClassrooms(accountId);

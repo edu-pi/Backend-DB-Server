@@ -15,10 +15,11 @@ import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/classroom-account")
-public class ClassroomAccountController {
+public class ClassroomAccountController implements ClassroomAccountOpenApi {
 
     private final ClassroomAccountService classroomAccountService;
 
+    @Override
     @PostMapping
     public ResponseEntity<ClassroomAccount> registerGuest(
         @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest
