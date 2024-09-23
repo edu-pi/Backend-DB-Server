@@ -1,4 +1,4 @@
-package soma.edupimeta.common.exception;
+package soma.edupimeta.web.exception;
 
 public class AlreadyExistsException extends RuntimeException {
 

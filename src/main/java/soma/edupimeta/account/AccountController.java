@@ -30,11 +30,11 @@ public class AccountController implements AccountOpenApi {
     @Override
     @PostMapping("/signup")
     public ResponseEntity<SignupResponse> saveAccount(@Valid @RequestBody SignupRequest signupRequest) {
-        accountService.signup(signupRequest);
+        Account account = accountService.signup(signupRequest);
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(new SignupResponse());
+            .body(new SignupResponse(account));
     }
 
     @Override

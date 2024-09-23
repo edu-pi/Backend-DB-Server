@@ -1,11 +1,9 @@
 package soma.edupimeta.account;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,9 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import soma.edupimeta.account.exception.InvalidInputException;
 import soma.edupimeta.account.models.LoginRequest;
-import soma.edupimeta.account.models.LoginResponse;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.AccountService;
+import soma.edupimeta.account.service.domain.Account;
 
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {
@@ -66,10 +64,14 @@ class AccountControllerTest {
     @DisplayName("올바른 email, password로 로그인")
     void login() throws Exception {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
-        LoginResponse response = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
+        Account account = Account.builder()
+            .email("asdf@naver.com")
+            .password("asdf1234!")
+            .name("홍길동")
+            .build();
 
-        when(accountService.findAccountByEmail(loginRequest))
-            .thenReturn(response);
+        when(accountService.login(loginRequest.getEmail(), loginRequest.getPassword()))
+            .thenReturn(account);
 
         mockMvc.perform(post("/v1/account/login")
             .content(mapper.writeValueAsString(loginRequest))
@@ -88,16 +90,21 @@ class AccountControllerTest {
             .password("qpwoeiruty00@")
             .build();
 
+        Account account = Account.builder()
+            .email("aabbcc@naver.com")
+            .name("김미미")
+            .password("qpwoeiruty00@")
+            .build();
+
         // Mocking
-        doNothing().when(accountService).saveAccount(any(SignupRequest.class));
+        when(accountService.signup(any(SignupRequest.class))).thenReturn(account);
 
         // When & Then
         mockMvc.perform(post("/v1/account/signup")
-                .content(mapper.writeValueAsString(signupRequest))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-            ).andExpect(status().isOk())
-            .andExpect(jsonPath("$.message").value("회원가입이 완료되었습니다."));
+            .content(mapper.writeValueAsString(signupRequest))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
     }
 
     @Test
@@ -111,7 +118,7 @@ class AccountControllerTest {
             .build();
 
         // Mocking
-        doThrow(InvalidInputException.class).when(accountService).saveAccount(any(SignupRequest.class));
+        doThrow(InvalidInputException.class).when(accountService).signup(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/account/signup")

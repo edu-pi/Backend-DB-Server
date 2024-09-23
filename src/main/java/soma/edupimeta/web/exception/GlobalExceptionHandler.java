@@ -1,4 +1,4 @@
-package soma.edupimeta.common.exception;
+package soma.edupimeta.web.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import soma.edupimeta.account.exception.InvalidInputException;
 import soma.edupimeta.account.exception.ServerException;
-import soma.edupimeta.common.models.DefaultErrorResponse;
+import soma.edupimeta.web.models.DefaultErrorResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

@@ -19,7 +19,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signup(SignupRequest signupRequest) {
+    public Account signup(SignupRequest signupRequest) {
         Account account = signupRequest.toEntity();
 
         // 이메일 중복 체크
@@ -28,7 +28,7 @@ public class AccountService {
         }
 
         account.encodePassword();
-        addAccount(account);
+        return addAccount(account);
     }
 
     @Transactional(readOnly = true)
@@ -59,7 +59,7 @@ public class AccountService {
     private Account getMember(String email) {
         return accountRepository.findAccountByEmail(email).orElseThrow(
             // Todo 예외 정의
-            () -> new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다.")
+            () -> new InvalidInputException("존재하지 않는 회원입니다.")
         );
     }
 
@@ -67,8 +67,8 @@ public class AccountService {
         return !passwordEncoder.matches(inputPassword, originalPassword);
     }
 
-    private void addAccount(Account account) {
-        accountRepository.save(account);
+    private Account addAccount(Account account) {
+        return accountRepository.save(account);
     }
 
 }

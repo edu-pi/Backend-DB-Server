@@ -1,4 +1,4 @@
-package soma.edupimeta.common.exception;
+package soma.edupimeta.web.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

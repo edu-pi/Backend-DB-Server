@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.account.exception.InvalidInputException;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
-import soma.edupimeta.account.models.LoginResponse;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.domain.Account;
 import soma.edupimeta.account.service.repository.AccountRepository;
@@ -46,7 +45,7 @@ class AccountServiceTest {
         when(accountRepository.findAccountByEmail(anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> accountService.findAccountByEmail(loginRequest))
+        Assertions.assertThatThrownBy(() -> accountService.login(loginRequest.getEmail(), loginRequest.getPassword()))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -62,7 +61,7 @@ class AccountServiceTest {
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
-        Assertions.assertThatThrownBy(() -> accountService.findAccountByEmail(loginRequest))
+        Assertions.assertThatThrownBy(() -> accountService.login(loginRequest.getEmail(), loginRequest.getPassword()))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
     }
@@ -78,7 +77,7 @@ class AccountServiceTest {
             .thenReturn(Optional.of(mockMember));
 
         // When
-        accountService.activateAccount(emailRequest);
+        accountService.verifyAccountByEmail(emailRequest.getEmail());
 
         // Then
         verify(mockMember).activate();  // activate 메소드 호출 검증
@@ -94,7 +93,7 @@ class AccountServiceTest {
             .thenReturn(Optional.empty());
 
         // When & Then
-        Assertions.assertThatThrownBy(() -> accountService.activateAccount(emailRequest))
+        Assertions.assertThatThrownBy(() -> accountService.verifyAccountByEmail(emailRequest.getEmail()))
             .isInstanceOf(InvalidInputException.class).hasMessage("존재하지 않는 회원입니다.");
     }
 
@@ -103,15 +102,20 @@ class AccountServiceTest {
     void loginSuccess() {
 
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234!");
-        LoginResponse expected = new LoginResponse("asdf@naver.com", "홍길동", "ROLE_USER");
+        Account account = Account.builder()
+            .email("asdf@naver.com")
+            .password("asdf1234!")
+            .name("홍길동")
+            .build();
 
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
             Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        LoginResponse result = accountService.findAccountByEmail(loginRequest);
+        Account result = accountService.login(loginRequest.getEmail(), loginRequest.getPassword());
 
-        Assertions.assertThat(result).isEqualTo(expected);
+        verify(accountRepository).findAccountByEmail(anyString());
+        verify(passwordEncoder).matches(anyString(), anyString());
     }
 
     @Test
@@ -127,7 +131,7 @@ class AccountServiceTest {
         when(accountRepository.existsByEmail(anyString())).thenReturn(true);
 
         // Then & When
-        Assertions.assertThatThrownBy(() -> accountService.saveAccount(signupRequest))
+        Assertions.assertThatThrownBy(() -> accountService.signup(signupRequest))
             .isInstanceOf(InvalidInputException.class)
             .hasMessage("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
 
@@ -146,7 +150,7 @@ class AccountServiceTest {
         when(accountRepository.save(any(Account.class))).thenThrow(mock(DataIntegrityViolationException.class));
 
         // Then & When
-        Assertions.assertThatThrownBy(() -> accountService.saveAccount(signupRequest))
+        Assertions.assertThatThrownBy(() -> accountService.signup(signupRequest))
             .isInstanceOf(DataIntegrityViolationException.class);
 
     }
@@ -168,7 +172,7 @@ class AccountServiceTest {
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
         // When
-        accountService.saveAccount(signupRequest);
+        accountService.signup(signupRequest);
 
         // Then
         verify(accountRepository).save(any(Account.class));   // 호출 되었는지 검증

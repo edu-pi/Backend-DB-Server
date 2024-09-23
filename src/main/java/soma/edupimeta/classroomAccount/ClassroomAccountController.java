@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 import soma.edupimeta.classroomAccount.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroomAccount.service.ClassroomAccountService;
+import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 
 @Slf4j
 @RestController
@@ -23,7 +23,10 @@ public class ClassroomAccountController {
     public ResponseEntity<ClassroomAccount> registerGuest(
         @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest
     ) {
-        ClassroomAccount guest = classroomAccountService.registerGuest(createClassroomAccountRequest);
+        ClassroomAccount guest = classroomAccountService.registerGuest(
+            createClassroomAccountRequest.getAccountId(),
+            createClassroomAccountRequest.getClassroomId()
+        );
 
         return ResponseEntity.ok().body(guest);
     }

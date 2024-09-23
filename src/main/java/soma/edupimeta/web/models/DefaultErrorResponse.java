@@ -1,4 +1,4 @@
-package soma.edupimeta.common.models;
+package soma.edupimeta.web.models;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

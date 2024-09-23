@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
 
     @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
@@ -20,4 +20,8 @@ public class LoginRequest {
     @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).*$", message = "비밀번호는 최소 1개의 특수기호를 포함해야 합니다.")
     private String password;
 
+    public LoginRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

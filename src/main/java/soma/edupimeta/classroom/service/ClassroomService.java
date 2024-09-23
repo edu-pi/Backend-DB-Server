@@ -5,16 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.ClassroomResponse;
+import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomsResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroomAccount.service.repository.ClassroomAccountRepository;
-import soma.edupimeta.common.exception.AlreadyExistsException;
-import soma.edupimeta.common.exception.DbServerException;
+import soma.edupimeta.web.exception.AlreadyExistsException;
+import soma.edupimeta.web.exception.DbServerException;
 
 @Service
 @Transactional
