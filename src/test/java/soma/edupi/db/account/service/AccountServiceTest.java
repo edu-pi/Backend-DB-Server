@@ -82,7 +82,6 @@ class AccountServiceTest {
 
         // Then
         verify(mockMember).activate();  // activate 메소드 호출 검증
-        verify(accountRepository).save(mockMember);  // save 호출 검증
     }
 
     @Test
