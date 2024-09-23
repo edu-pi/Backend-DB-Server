@@ -56,11 +56,15 @@ public class Account {
         this.name = name;
         this.role = role;
         this.phoneNumber = phoneNumber;
-        this.is_enabled = true;
+        this.is_enabled = false;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void activate() {
+        this.is_enabled = true;
     }
 
 }

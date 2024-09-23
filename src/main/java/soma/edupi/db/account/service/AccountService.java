@@ -1,16 +1,19 @@
 package soma.edupi.db.account.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupi.db.account.domain.Account;
 import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.models.request.EmailRequest;
 import soma.edupi.db.account.models.request.LoginRequest;
 import soma.edupi.db.account.models.request.SignupRequest;
 import soma.edupi.db.account.models.response.LoginResponse;
 import soma.edupi.db.account.repository.AccountRepository;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -43,6 +46,21 @@ public class AccountService {
         }
 
         return LoginResponse.of(findAccount);
+    }
+
+    @Transactional
+    public String activateAccount(EmailRequest emailRequest) {
+        // 이메일이 일치하는 유저 찾기
+        Account account = accountRepository.findAccountByEmail(emailRequest.getEmail())
+            .orElseThrow(() -> {
+                    log.info("email activateAccount fail, email = {} ", emailRequest.getEmail());
+                    return new InvalidInputException("존재하지 않는 회원입니다.");
+                }
+            );
+        // 계정 활성
+        account.activate();
+
+        return account.getEmail();
     }
 
 }

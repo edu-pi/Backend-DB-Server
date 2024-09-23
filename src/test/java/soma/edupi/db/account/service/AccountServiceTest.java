@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupi.db.account.domain.Account;
 import soma.edupi.db.account.exception.InvalidInputException;
+import soma.edupi.db.account.models.request.EmailRequest;
 import soma.edupi.db.account.models.request.LoginRequest;
 import soma.edupi.db.account.models.request.SignupRequest;
 import soma.edupi.db.account.models.response.LoginResponse;
@@ -64,6 +65,37 @@ class AccountServiceTest {
         Assertions.assertThatThrownBy(() -> accountService.findAccountByEmail(loginRequest))
             .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
 
+    }
+
+    @Test
+    @DisplayName("저장된 계정 활성화")
+    void activateAccountSuccess() {
+        // given
+        EmailRequest emailRequest = new EmailRequest("test@naver.com");
+        Account mockMember = mock(Account.class);
+
+        when(accountRepository.findAccountByEmail(anyString()))
+            .thenReturn(Optional.of(mockMember));
+
+        // When
+        accountService.activateAccount(emailRequest);
+
+        // Then
+        verify(mockMember).activate();  // activate 메소드 호출 검증
+    }
+
+    @Test
+    @DisplayName("저장되지 않은 계정 활성화")
+    void activateAccountFailNotExist() {
+        // given
+        EmailRequest emailRequest = new EmailRequest("test@naver.com");
+
+        when(accountRepository.findAccountByEmail(anyString()))
+            .thenReturn(Optional.empty());
+
+        // When & Then
+        Assertions.assertThatThrownBy(() -> accountService.activateAccount(emailRequest))
+            .isInstanceOf(InvalidInputException.class).hasMessage("존재하지 않는 회원입니다.");
     }
 
     @Test
