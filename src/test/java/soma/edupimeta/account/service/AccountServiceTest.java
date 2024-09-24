@@ -22,6 +22,7 @@ import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.domain.Account;
+import soma.edupimeta.account.service.domain.AccountRole;
 import soma.edupimeta.account.service.repository.AccountRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +58,8 @@ class AccountServiceTest {
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "differentPassword");
 
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
-            Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
+            Account.builder().email("asdf@naver.com").password("asdf1234!").role(AccountRole.USER).name("홍길동")
+                .build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
             new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
 
@@ -109,7 +111,8 @@ class AccountServiceTest {
             .build();
 
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
-            Account.builder().email("asdf@naver.com").password("asdf1234!").role("ROLE_USER").name("홍길동").build()));
+            Account.builder().email("asdf@naver.com").password("asdf1234!").role(AccountRole.USER).name("홍길동")
+                .build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
         Account result = accountService.login(loginRequest.getEmail(), loginRequest.getPassword());
