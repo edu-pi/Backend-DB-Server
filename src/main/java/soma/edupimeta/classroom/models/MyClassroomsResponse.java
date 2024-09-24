@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyClassroomsResponse {
 
-    private int classroomCount;
-    private List<ClassroomResponse> classrooms;
+    private List<MyClassroomResponse> host;
+    private List<MyClassroomResponse> guest;
 
-    public MyClassroomsResponse(int classroomCount, List<ClassroomResponse> classrooms) {
-        this.classroomCount = classroomCount;
-        this.classrooms = classrooms;
+    public MyClassroomsResponse(List<MyClassroomResponse> host, List<MyClassroomResponse> guest) {
+        this.host = host;
+        this.guest = guest;
     }
 }

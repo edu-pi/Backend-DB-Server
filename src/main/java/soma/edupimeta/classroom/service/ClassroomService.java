@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupimeta.classroom.models.ClassroomResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
+import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.models.MyClassroomsResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
@@ -38,7 +38,7 @@ public class ClassroomService {
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(createClassroomRequest.getAccountId())
             .classroomId(savedClassroom.getId())
-            .role(ClassroomAccountRole.ROLE_HOST)
+            .role(ClassroomAccountRole.HOST)
             .build();
 
         classroomAccountRepository.save(classroomAccount);
@@ -52,9 +52,17 @@ public class ClassroomService {
             throw new DbServerException(HttpStatus.BAD_REQUEST, "로그인이 필요합니다.");
         }
 
-        List<ClassroomResponse> classrooms = classroomRepository.findAllByAccountIdWithGuestCount(accountId);
+        List<MyClassroomResponse> hosts = classroomRepository.findMyClassroomByClassroomAccountRole(
+            accountId,
+            ClassroomAccountRole.HOST
+        );
 
-        return new MyClassroomsResponse(classrooms.size(), classrooms);
+        List<MyClassroomResponse> guests = classroomRepository.findMyClassroomByClassroomAccountRole(
+            accountId,
+            ClassroomAccountRole.GUEST
+        );
+
+        return new MyClassroomsResponse(hosts, guests);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {

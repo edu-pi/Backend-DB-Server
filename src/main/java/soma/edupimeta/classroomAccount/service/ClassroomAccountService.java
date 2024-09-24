@@ -27,7 +27,7 @@ public class ClassroomAccountService {
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(accountId)
             .classroomId(classroomId)
-            .role(ClassroomAccountRole.ROLE_HOST)
+            .role(ClassroomAccountRole.HOST)
             .build();
 
         return addClassroomAccount(classroomAccount);

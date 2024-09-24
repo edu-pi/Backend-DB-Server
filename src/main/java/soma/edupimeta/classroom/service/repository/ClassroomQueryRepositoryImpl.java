@@ -8,7 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import soma.edupimeta.classroom.models.ClassroomResponse;
+import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
 
 @Repository
@@ -26,7 +26,7 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
             .on(classroomAccount.accountId.eq(classroom.id))
             .where(
                 classroomAccount.accountId.eq(accountId),
-                classroomAccount.role.eq(ClassroomAccountRole.ROLE_HOST),
+                classroomAccount.role.eq(ClassroomAccountRole.HOST),
                 classroom.name.eq(name)
             )
             .fetchFirst();
@@ -34,16 +34,18 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
         return fetchOne != null;
     }
 
-    public List<ClassroomResponse> findAllByAccountIdWithGuestCount(Long accountId) {
+    public List<MyClassroomResponse> findMyClassroomByClassroomAccountRole(Long accountId, ClassroomAccountRole role) {
         return queryFactory
             .select(Projections.constructor(
-                ClassroomResponse.class,
+                MyClassroomResponse.class,
                 classroom.id,
                 classroom.name,
-                classroomAccount.id.count().as("guestCount")  // 학생 수 카운트
+                classroomAccount.id.count().as("totalPeople")
             ))
             .from(classroom)
-            .leftJoin(classroomAccount).on(classroomAccount.classroomId.eq(classroom.id))
+            .leftJoin(classroomAccount)
+            .on(classroomAccount.classroomId.eq(classroom.id))
+            .where(classroomAccount.role.eq(role))
             .groupBy(classroom.id)
             .fetch();
     }

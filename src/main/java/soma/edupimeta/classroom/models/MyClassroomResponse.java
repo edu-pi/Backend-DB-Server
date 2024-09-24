@@ -5,15 +5,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ClassroomResponse {
+public class MyClassroomResponse {
 
     private Long id;
     private String name;
-    private Long guestCount;
+    private Long totalPeople;
 
-    public ClassroomResponse(Long id, String name, Long guestCount) {
+    public MyClassroomResponse(Long id, String name, Long totalPeople) {
         this.id = id;
         this.name = name;
-        this.guestCount = guestCount;
+        this.totalPeople = totalPeople;
     }
 }
