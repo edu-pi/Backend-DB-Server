@@ -2,6 +2,7 @@ package soma.edupimeta.account.models;
 
 import lombok.Getter;
 import soma.edupimeta.account.service.domain.Account;
+import soma.edupimeta.account.service.domain.AccountRole;
 
 @Getter
 public class SignupResponse {
@@ -9,7 +10,7 @@ public class SignupResponse {
     Long id;
     String email;
     String name;
-    String role;
+    AccountRole role;
     String phoneNumber;
     boolean isEnabled;
 

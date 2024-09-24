@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import soma.edupimeta.account.service.domain.Account;
+import soma.edupimeta.account.service.domain.AccountRole;
 
 @Getter
 @ToString
@@ -39,7 +40,7 @@ public class SignupRequest {
             .password(password)
             .name(name)
             .phoneNumber(phoneNumber)
-            .role("ROLE_USER")
+            .role(AccountRole.USER)
             .build();
     }
 }
