@@ -2,11 +2,14 @@ package soma.edupimeta.classroomAccount.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import soma.edupimeta.classroom.exception.ClassroomErrorCode;
+import soma.edupimeta.classroom.exception.ClassroomException;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
+import soma.edupimeta.classroomAccount.exception.ClassroomAccountErrorCode;
+import soma.edupimeta.classroomAccount.exception.ClassroomAccountException;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroomAccount.service.repository.ClassroomAccountRepository;
-import soma.edupimeta.web.exception.AlreadyExistsException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +20,11 @@ public class ClassroomAccountService {
 
     public ClassroomAccount registerGuest(Long accountId, Long classroomId) {
         if (isExistsClassroom(classroomId)) {
-            throw new IllegalArgumentException("해당 클래스룸이 존재하지 않습니다.");
+            throw new ClassroomException(ClassroomErrorCode.CLASSROOM_NOT_FOUND);
         }
 
         if (isDuplicate(accountId, classroomId)) {
-            throw new AlreadyExistsException("이미 등록된 계정입니다.");
+            throw new ClassroomAccountException(ClassroomAccountErrorCode.ALREADY_REGISTER);
         }
 
         ClassroomAccount classroomAccount = ClassroomAccount.builder()

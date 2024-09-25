@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupimeta.account.exception.InvalidInputException;
+import soma.edupimeta.account.exception.AccountException;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.SignupRequest;
@@ -43,11 +43,10 @@ class AccountServiceTest {
 
         LoginRequest loginRequest = new LoginRequest("asdf@naver.com", "asdf1234");
 
-        when(accountRepository.findAccountByEmail(anyString())).thenThrow(
-            new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
+        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> accountService.login(loginRequest.getEmail(), loginRequest.getPassword()))
-            .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(AccountException.class);
 
     }
 
@@ -60,11 +59,10 @@ class AccountServiceTest {
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
             Account.builder().email("asdf@naver.com").password("asdf1234!").role(AccountRole.USER).name("홍길동")
                 .build()));
-        when(passwordEncoder.matches(anyString(), anyString())).thenThrow(
-            new InvalidInputException("이메일 혹은 비밀번호가 일치하지 않습니다."));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         Assertions.assertThatThrownBy(() -> accountService.login(loginRequest.getEmail(), loginRequest.getPassword()))
-            .isInstanceOf(InvalidInputException.class).hasMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            .isInstanceOf(AccountException.class);
 
     }
 
@@ -91,12 +89,11 @@ class AccountServiceTest {
         // given
         EmailRequest emailRequest = new EmailRequest("test@naver.com");
 
-        when(accountRepository.findAccountByEmail(anyString()))
-            .thenReturn(Optional.empty());
+        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.empty());
 
         // When & Then
         Assertions.assertThatThrownBy(() -> accountService.verifyAccountByEmail(emailRequest.getEmail()))
-            .isInstanceOf(InvalidInputException.class).hasMessage("존재하지 않는 회원입니다.");
+            .isInstanceOf(AccountException.class);
     }
 
     @Test
@@ -135,8 +132,7 @@ class AccountServiceTest {
 
         // Then & When
         Assertions.assertThatThrownBy(() -> accountService.signup(signupRequest))
-            .isInstanceOf(InvalidInputException.class)
-            .hasMessage("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+            .isInstanceOf(AccountException.class);
 
     }
 

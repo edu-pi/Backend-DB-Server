@@ -16,7 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.edupimeta.account.exception.InvalidInputException;
+import soma.edupimeta.account.exception.AccountErrorCode;
+import soma.edupimeta.account.exception.AccountException;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.AccountService;
@@ -117,14 +118,14 @@ class AccountControllerTest {
             .password("qpwoeiruty00@")
             .build();
 
-        // Mocking
-        doThrow(InvalidInputException.class).when(accountService).signup(any(SignupRequest.class));
+        doThrow(new AccountException(AccountErrorCode.EMAIL_DUPLICATE)).when(accountService)
+            .signup(any(SignupRequest.class));
 
         // When & Then
         mockMvc.perform(post("/v1/account/signup")
             .content(mapper.writeValueAsString(signupRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isBadRequest());
+        ).andExpect(status().isConflict());
     }
 }
