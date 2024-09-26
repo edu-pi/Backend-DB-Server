@@ -1,4 +1,4 @@
-package soma.edupimeta.classroomAccount.exception;
+package soma.edupimeta.classroom.account.exception;
 
 import org.springframework.http.HttpStatus;
 import soma.edupimeta.web.exception.ErrorEnum;

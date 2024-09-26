@@ -1,11 +1,11 @@
-package soma.edupimeta.classroomAccount.models;
+package soma.edupimeta.classroom.account.models;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 
 @Getter
 @NoArgsConstructor
@@ -16,6 +16,8 @@ public class CreateClassroomAccountRequest {
     private Long accountId;
     @NotNull
     private Long classroomId;
+    @NotNull
+    private ClassroomAccountRole role;
 
     public ClassroomAccount toEntity(ClassroomAccountRole role) {
         return ClassroomAccount.builder()

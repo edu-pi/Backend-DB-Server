@@ -1,4 +1,4 @@
-package soma.edupimeta.classroomAccount.service.domain;
+package soma.edupimeta.classroom.account.service.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

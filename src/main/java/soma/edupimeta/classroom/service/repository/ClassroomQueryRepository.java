@@ -2,8 +2,8 @@ package soma.edupimeta.classroom.service.repository;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
 
 @Repository
 public interface ClassroomQueryRepository {

@@ -1,15 +1,15 @@
 package soma.edupimeta.classroom.service.repository;
 
+import static soma.edupimeta.classroom.account.service.domain.QClassroomAccount.classroomAccount;
 import static soma.edupimeta.classroom.service.domain.QClassroom.classroom;
-import static soma.edupimeta.classroomAccount.service.domain.QClassroomAccount.classroomAccount;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
 
 @Repository
 @RequiredArgsConstructor

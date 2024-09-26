@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.account.exception.AccountErrorEnum;
 import soma.edupimeta.account.exception.AccountException;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
+import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
+import soma.edupimeta.classroom.account.service.repository.ClassroomAccountRepository;
 import soma.edupimeta.classroom.exception.ClassroomErrorEnum;
 import soma.edupimeta.classroom.exception.ClassroomException;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
@@ -13,9 +16,6 @@ import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.models.MyClassroomsResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
-import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
-import soma.edupimeta.classroomAccount.service.repository.ClassroomAccountRepository;
 
 @Service
 @Transactional
@@ -23,7 +23,6 @@ import soma.edupimeta.classroomAccount.service.repository.ClassroomAccountReposi
 public class ClassroomService {
 
     private final ClassroomRepository classroomRepository;
-
     private final ClassroomAccountRepository classroomAccountRepository;
 
     public Classroom createClassroom(CreateClassroomRequest createClassroomRequest) {
