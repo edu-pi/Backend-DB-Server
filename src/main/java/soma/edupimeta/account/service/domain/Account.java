@@ -2,6 +2,8 @@ package soma.edupimeta.account.service.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +37,8 @@ public class Account {
     private String name;
 
     @NotNull
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private AccountRole role;
 
     @NotNull
     private Boolean isEnabled;
@@ -51,7 +54,7 @@ public class Account {
     private LocalDateTime lastAccessAt;
 
     @Builder
-    public Account(String email, String password, String name, String role, String phoneNumber) {
+    public Account(String email, String password, String name, AccountRole role, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.name = name;
