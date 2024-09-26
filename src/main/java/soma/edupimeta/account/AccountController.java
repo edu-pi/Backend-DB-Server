@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
@@ -22,13 +21,12 @@ import soma.edupimeta.account.service.domain.Account;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/account")
 public class AccountController implements AccountOpenApi {
 
     private final AccountService accountService;
 
     @Override
-    @PostMapping("/signup")
+    @PostMapping("/v1/account/signup")
     public ResponseEntity<SignupResponse> saveAccount(@Valid @RequestBody SignupRequest signupRequest) {
         Account account = accountService.signup(signupRequest);
 
@@ -38,7 +36,7 @@ public class AccountController implements AccountOpenApi {
     }
 
     @Override
-    @PostMapping("/login")
+    @PostMapping("/v1/account/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         Account account = accountService.login(loginRequest.getEmail(), loginRequest.getPassword());
 
@@ -47,7 +45,7 @@ public class AccountController implements AccountOpenApi {
             .body(LoginResponse.of(account));
     }
 
-    @PostMapping("/activate")
+    @PostMapping("/v1/account/activate")
     public ResponseEntity<AccountActivateResponse> activateAccount(@Valid @RequestBody EmailRequest emailRequest) {
         log.info("계정 활성화 요청 = {} ", emailRequest.getEmail());
 
