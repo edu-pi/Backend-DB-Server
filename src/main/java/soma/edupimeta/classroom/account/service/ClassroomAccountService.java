@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
+import soma.edupimeta.classroom.account.service.domain.ActionStatus;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroom.account.service.repository.ClassroomAccountRepository;
@@ -30,10 +31,31 @@ public class ClassroomAccountService {
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(accountId)
             .classroomId(classroomId)
+            .actionStatus(ActionStatus.ING.getType())
             .role(role)
             .build();
 
         return addClassroomAccount(classroomAccount);
+    }
+
+    public void initializeClassroomAccountActionStatus(Long classroomId) {
+        boolean isUpdated = classroomAccountRepository.updateActionStatusForClassroom(classroomId);
+
+        if (!isUpdated) {
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
+        }
+    }
+
+    public void changeClassroomAccountActionStatus(Long classroomId, Long accountId, ActionStatus actionStatus) {
+        boolean isUpdated = classroomAccountRepository.updateActionStatusByClassroomIdAndAccountId(
+            classroomId,
+            accountId,
+            actionStatus
+        );
+
+        if (!isUpdated) {
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
+        }
     }
 
     private boolean isExistsClassroom(Long classroomId) {

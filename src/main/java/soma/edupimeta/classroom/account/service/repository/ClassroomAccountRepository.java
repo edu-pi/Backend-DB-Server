@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 
 @Repository
-public interface ClassroomAccountRepository extends JpaRepository<ClassroomAccount, Long> {
+public interface ClassroomAccountRepository
+    extends JpaRepository<ClassroomAccount, Long>, ClassroomAccountQueryRepository {
 
     boolean existsByAccountIdAndClassroomId(Long accountId, Long classroomId);
 

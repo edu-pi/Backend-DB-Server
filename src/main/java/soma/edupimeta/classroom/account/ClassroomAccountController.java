@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import soma.edupimeta.classroom.account.models.ActionChangeRequest;
+import soma.edupimeta.classroom.account.models.ActionInitializeRequest;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
@@ -33,6 +35,34 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
             .status(HttpStatus.OK)
             .body(classroomAccount);
     }
+
+    @Override
+    @PostMapping("/v1/classroom/action/initialization")
+    public ResponseEntity<Void> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
+        log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
+        classroomAccountService.initializeClassroomAccountActionStatus(actionInitializeRequest.getClassroomId());
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
+
+    @Override
+    @PostMapping("/v1/classroom/account/action")
+    public ResponseEntity<Void> changeClassroomAccountActionStatus(
+        @RequestBody ActionChangeRequest actionChangeRequest
+    ) {
+        classroomAccountService.changeClassroomAccountActionStatus(
+            actionChangeRequest.getClassroomId(),
+            actionChangeRequest.getAccountId(),
+            actionChangeRequest.getAction()
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .build();
+    }
+
 
 }
 

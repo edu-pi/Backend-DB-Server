@@ -29,6 +29,9 @@ public class ClassroomAccount {
     private Long classroomId;
 
     @NotNull
+    private int actionStatus;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ClassroomAccountRole role;
 
@@ -37,9 +40,10 @@ public class ClassroomAccount {
     private LocalDateTime createdAt;
 
     @Builder
-    public ClassroomAccount(Long accountId, Long classroomId, ClassroomAccountRole role) {
+    public ClassroomAccount(Long accountId, Long classroomId, int actionStatus, ClassroomAccountRole role) {
         this.accountId = accountId;
         this.classroomId = classroomId;
+        this.actionStatus = actionStatus;
         this.role = role;
     }
 
