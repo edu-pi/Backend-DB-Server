@@ -3,7 +3,7 @@ package soma.edupimeta.classroomAccount.exception;
 import org.springframework.http.HttpStatus;
 import soma.edupimeta.web.exception.ErrorCode;
 
-public enum ClassroomAccountErrorCode implements ErrorCode {
+public enum ClassroomAccountErrorEnum implements ErrorCode {
     // 400
     ALREADY_REGISTER(HttpStatus.BAD_REQUEST, "DB-400201", "클래스룸에 이미 참여되어 있습니다."),
 
@@ -13,7 +13,7 @@ public enum ClassroomAccountErrorCode implements ErrorCode {
     private final String code;
     private final String details;
 
-    ClassroomAccountErrorCode(HttpStatus httpStatus, String code, String details) {
+    ClassroomAccountErrorEnum(HttpStatus httpStatus, String code, String details) {
         this.httpStatus = httpStatus;
         this.code = code;
         this.details = details;

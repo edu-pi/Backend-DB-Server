@@ -2,10 +2,10 @@ package soma.edupimeta.classroomAccount.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import soma.edupimeta.classroom.exception.ClassroomErrorCode;
+import soma.edupimeta.classroom.exception.ClassroomErrorEnum;
 import soma.edupimeta.classroom.exception.ClassroomException;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
-import soma.edupimeta.classroomAccount.exception.ClassroomAccountErrorCode;
+import soma.edupimeta.classroomAccount.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroomAccount.exception.ClassroomAccountException;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccount;
 import soma.edupimeta.classroomAccount.service.domain.ClassroomAccountRole;
@@ -20,11 +20,11 @@ public class ClassroomAccountService {
 
     public ClassroomAccount registerGuest(Long accountId, Long classroomId) {
         if (isExistsClassroom(classroomId)) {
-            throw new ClassroomException(ClassroomErrorCode.CLASSROOM_NOT_FOUND);
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
         if (isDuplicate(accountId, classroomId)) {
-            throw new ClassroomAccountException(ClassroomAccountErrorCode.ALREADY_REGISTER);
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.ALREADY_REGISTER);
         }
 
         ClassroomAccount classroomAccount = ClassroomAccount.builder()

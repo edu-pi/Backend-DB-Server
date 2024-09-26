@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soma.edupimeta.account.exception.AccountErrorCode;
+import soma.edupimeta.account.exception.AccountErrorEnum;
 import soma.edupimeta.account.exception.AccountException;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.domain.Account;
@@ -25,7 +25,7 @@ public class AccountService {
 
         // 이메일 중복 체크
         if (isExists(account.getEmail())) {
-            throw new AccountException(AccountErrorCode.EMAIL_DUPLICATE);
+            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
         account.encodePassword();
@@ -38,7 +38,7 @@ public class AccountService {
 
         // 비밀번호가 일치하지 않는 경우
         if (validatePassword(password, account.getPassword())) {
-            throw new AccountException(AccountErrorCode.EMAIL_OR_PASSWORD_NOT_MATCH);
+            throw new AccountException(AccountErrorEnum.EMAIL_OR_PASSWORD_NOT_MATCH);
         }
 
         return account;
@@ -59,7 +59,7 @@ public class AccountService {
 
     private Account getMember(String email) {
         return accountRepository.findAccountByEmail(email).orElseThrow(
-            () -> new AccountException(AccountErrorCode.EMAIL_NOT_MATCH)
+            () -> new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH)
         );
     }
 

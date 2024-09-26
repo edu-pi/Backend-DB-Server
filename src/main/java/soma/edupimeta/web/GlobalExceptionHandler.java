@@ -13,15 +13,6 @@ import soma.edupimeta.web.models.ErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
-        printErrorLog(exception);
-
-        return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(new ErrorResponse("DB-400999", "예상하지 못한 에러가 발생했습니다."));
-    }
-
     @ExceptionHandler(DbServerException.class)
     public ResponseEntity<ErrorResponse> handleServerException(DbServerException exception) {
         printErrorLog(exception);
@@ -31,6 +22,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(errorCode.getHttpStatus())
             .body(new ErrorResponse(errorCode.getCode(), errorCode.getDetail()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+        printErrorLog(exception);
+
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(new ErrorResponse("DB-400999", "예상하지 못한 에러가 발생했습니다."));
     }
 
     private void printErrorLog(Exception exception) {

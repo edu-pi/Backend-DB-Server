@@ -3,7 +3,7 @@ package soma.edupimeta.classroom.exception;
 import org.springframework.http.HttpStatus;
 import soma.edupimeta.web.exception.ErrorCode;
 
-public enum ClassroomErrorCode implements ErrorCode {
+public enum ClassroomErrorEnum implements ErrorCode {
     //400
     CLASSROOM_NOT_FOUND(HttpStatus.BAD_REQUEST, "DB-400101", "클래스룸이 존재하지 않습니다."),
 
@@ -14,7 +14,7 @@ public enum ClassroomErrorCode implements ErrorCode {
     private final String code;
     private final String details;
 
-    ClassroomErrorCode(HttpStatus httpStatus, String code, String details) {
+    ClassroomErrorEnum(HttpStatus httpStatus, String code, String details) {
         this.httpStatus = httpStatus;
         this.code = code;
         this.details = details;

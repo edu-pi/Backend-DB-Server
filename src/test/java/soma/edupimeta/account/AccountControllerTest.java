@@ -16,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import soma.edupimeta.account.exception.AccountErrorCode;
+import soma.edupimeta.account.exception.AccountErrorEnum;
 import soma.edupimeta.account.exception.AccountException;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.SignupRequest;
@@ -118,7 +118,7 @@ class AccountControllerTest {
             .password("qpwoeiruty00@")
             .build();
 
-        doThrow(new AccountException(AccountErrorCode.EMAIL_DUPLICATE)).when(accountService)
+        doThrow(new AccountException(AccountErrorEnum.EMAIL_DUPLICATE)).when(accountService)
             .signup(any(SignupRequest.class));
 
         // When & Then
