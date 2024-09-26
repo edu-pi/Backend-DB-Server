@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import soma.edupimeta.web.exception.DbServerException;
-import soma.edupimeta.web.exception.ErrorCode;
+import soma.edupimeta.web.exception.ErrorEnum;
 import soma.edupimeta.web.models.ErrorResponse;
 
 @Slf4j
@@ -17,11 +17,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleServerException(DbServerException exception) {
         printErrorLog(exception);
 
-        ErrorCode errorCode = exception.getErrorCode();
+        ErrorEnum errorEnum = exception.getErrorCode();
 
         return ResponseEntity
-            .status(errorCode.getHttpStatus())
-            .body(new ErrorResponse(errorCode.getCode(), errorCode.getDetail()));
+            .status(errorEnum.getHttpStatus())
+            .body(new ErrorResponse(errorEnum.getCode(), errorEnum.getDetail()));
     }
 
     @ExceptionHandler(Exception.class)

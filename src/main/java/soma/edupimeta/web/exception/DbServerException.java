@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class DbServerException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ErrorEnum errorCode;
 
-    public DbServerException(ErrorCode errorCode) {
+    public DbServerException(ErrorEnum errorCode) {
         super(errorCode.getDetail());
         this.errorCode = errorCode;
     }
