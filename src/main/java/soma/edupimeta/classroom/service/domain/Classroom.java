@@ -5,16 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 
 @Entity
 @Getter
@@ -28,9 +25,6 @@ public class Classroom {
 
     @NotNull
     private String name;
-
-    @OneToMany
-    private List<ClassroomAccount> classroomAccounts;
 
     @CreationTimestamp
     @Column(updatable = false)
