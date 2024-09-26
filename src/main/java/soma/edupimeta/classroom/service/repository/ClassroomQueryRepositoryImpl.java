@@ -17,6 +17,7 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    @Override
     public boolean existsHostClassroomByAccountIdAndName(Long accountId, String name) {
 
         Integer fetchOne = queryFactory
@@ -34,6 +35,7 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
         return fetchOne != null;
     }
 
+    @Override
     public List<MyClassroomResponse> findMyClassroomByClassroomAccountRole(Long accountId, ClassroomAccountRole role) {
         return queryFactory
             .select(Projections.constructor(
