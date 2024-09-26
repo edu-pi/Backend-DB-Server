@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import soma.edupimeta.web.exception.DbServerException;
+import soma.edupimeta.web.exception.BaseException;
 import soma.edupimeta.web.exception.ErrorEnum;
 import soma.edupimeta.web.models.ErrorResponse;
 
@@ -13,8 +13,8 @@ import soma.edupimeta.web.models.ErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(DbServerException.class)
-    public ResponseEntity<ErrorResponse> handleServerException(DbServerException exception) {
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponse> handleServerException(BaseException exception) {
         printErrorLog(exception);
 
         ErrorEnum errorEnum = exception.getErrorCode();
