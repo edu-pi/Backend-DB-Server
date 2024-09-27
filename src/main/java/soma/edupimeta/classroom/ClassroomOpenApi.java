@@ -5,10 +5,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
-import soma.edupimeta.classroom.models.MyClassroomsResponse;
+import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 
 @Tag(name = "Classroom", description = "Classroom API")
@@ -24,5 +25,5 @@ public interface ClassroomOpenApi {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "클래스룸 조회 성공", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<MyClassroomsResponse> getMyClassrooms(Long accountId);
+    ResponseEntity<List<MyClassroomResponse>> getMyClassrooms(Long accountId);
 }

@@ -36,21 +36,19 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
     }
 
     @Override
-    public List<MyClassroomResponse> findMyClassroomByClassroomAccountRole(Long accountId, ClassroomAccountRole role) {
+    public List<MyClassroomResponse> findMyClassrooms(Long accountId) {
         return queryFactory
             .select(Projections.constructor(
                 MyClassroomResponse.class,
                 classroom.id,
                 classroom.name,
+                classroomAccount.role,
                 classroomAccount.id.count().as("totalPeople")
             ))
             .from(classroom)
             .leftJoin(classroomAccount)
             .on(classroomAccount.classroomId.eq(classroom.id))
-            .where(
-                classroomAccount.accountId.eq(accountId),
-                classroomAccount.role.eq(role)
-            )
+            .where(classroomAccount.accountId.eq(accountId))
             .groupBy(classroom.id)
             .fetch();
     }

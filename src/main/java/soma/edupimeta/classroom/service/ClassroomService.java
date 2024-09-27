@@ -13,7 +13,6 @@ import soma.edupimeta.classroom.exception.ClassroomErrorEnum;
 import soma.edupimeta.classroom.exception.ClassroomException;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
-import soma.edupimeta.classroom.models.MyClassroomsResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
 
@@ -47,22 +46,12 @@ public class ClassroomService {
     }
 
     @Transactional(readOnly = true)
-    public MyClassroomsResponse getMyClassrooms(Long accountId) {
+    public List<MyClassroomResponse> getMyClassrooms(Long accountId) {
         if (accountId == null) {
             throw new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH);
         }
 
-        List<MyClassroomResponse> hosts = classroomRepository.findMyClassroomByClassroomAccountRole(
-            accountId,
-            ClassroomAccountRole.HOST
-        );
-
-        List<MyClassroomResponse> guests = classroomRepository.findMyClassroomByClassroomAccountRole(
-            accountId,
-            ClassroomAccountRole.GUEST
-        );
-
-        return new MyClassroomsResponse(hosts, guests);
+        return classroomRepository.findMyClassrooms(accountId);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
