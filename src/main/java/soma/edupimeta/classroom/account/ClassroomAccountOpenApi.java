@@ -29,7 +29,7 @@ public interface ClassroomAccountOpenApi {
         @ApiResponse(responseCode = "200", description = "초기화에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<Void> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest);
+    ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest);
 
     @Operation(summary = "클래스룸 계정의 진척도 상태 변경", description = "클래스룸 계정의 진척도 상태를 완료, 도움으로 변환")
     @ApiResponses(value = {

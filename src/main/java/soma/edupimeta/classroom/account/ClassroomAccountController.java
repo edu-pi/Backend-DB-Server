@@ -38,13 +38,15 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
 
     @Override
     @PostMapping("/v1/classroom/action/initialization")
-    public ResponseEntity<Void> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
+    public ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
         log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
-        classroomAccountService.initializeClassroomAccountActionStatus(actionInitializeRequest.getClassroomId());
+        long updateCount = classroomAccountService.initializeClassroomAccountActionStatus(
+            actionInitializeRequest.getClassroomId()
+        );
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .build();
+            .body(updateCount);
     }
 
     @Override

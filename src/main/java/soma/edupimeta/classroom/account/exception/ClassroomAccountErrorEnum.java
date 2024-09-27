@@ -6,7 +6,8 @@ import soma.edupimeta.web.exception.ErrorEnum;
 public enum ClassroomAccountErrorEnum implements ErrorEnum {
     // 400
     ALREADY_REGISTER(HttpStatus.BAD_REQUEST, "DB-400201", "클래스룸에 이미 참여되어 있습니다."),
-    CAN_NOT_UPDATE_ACTION_STATUS(HttpStatus.BAD_REQUEST, "DB-400202", "상태를 반영할 수 없습니다.");
+    CAN_NOT_UPDATE_ACTION_STATUS(HttpStatus.BAD_REQUEST, "DB-400202", "행동를 변경할 수 없습니다."),
+    ALREADY_UPDATE_ACTION_STATUS(HttpStatus.BAD_REQUEST, "DB-400203", "이미 동일한 행동입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

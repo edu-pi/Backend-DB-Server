@@ -14,14 +14,16 @@ public class ClassroomAccountQueryRepositoryImpl implements ClassroomAccountQuer
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Boolean updateActionStatusForClassroom(Long classroomId) {
-        long updatedCount = queryFactory
+    public Long updateActionStatusForClassroom(Long classroomId) {
+        return queryFactory
             .update(classroomAccount)
             .set(classroomAccount.actionStatus, ActionStatus.ING.getType())
-            .where(classroomAccount.id.eq(classroomId))
+            .where(
+                classroomAccount.classroomId.eq(classroomId),
+                classroomAccount.actionStatus.ne(ActionStatus.ING.getType())
+            )
             .execute();
 
-        return updatedCount > 0;
     }
 
     @Override

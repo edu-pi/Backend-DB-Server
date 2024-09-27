@@ -2,6 +2,7 @@ package soma.edupimeta.classroom.account.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
@@ -13,6 +14,7 @@ import soma.edupimeta.classroom.exception.ClassroomException;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ClassroomAccountService {
 
@@ -38,15 +40,23 @@ public class ClassroomAccountService {
         return addClassroomAccount(classroomAccount);
     }
 
-    public void initializeClassroomAccountActionStatus(Long classroomId) {
-        boolean isUpdated = classroomAccountRepository.updateActionStatusForClassroom(classroomId);
-
-        if (!isUpdated) {
-            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
+    public Long initializeClassroomAccountActionStatus(Long classroomId) {
+        if (isExistsClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
+
+        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
     }
 
     public void changeClassroomAccountActionStatus(Long classroomId, Long accountId, ActionStatus actionStatus) {
+        if (isExistsClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+
+        if (isHost(classroomId, accountId)) {
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
+        }
+
         boolean isUpdated = classroomAccountRepository.updateActionStatusByClassroomIdAndAccountId(
             classroomId,
             accountId,
@@ -54,12 +64,17 @@ public class ClassroomAccountService {
         );
 
         if (!isUpdated) {
-            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.ALREADY_UPDATE_ACTION_STATUS);
         }
     }
 
     private boolean isExistsClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
+    }
+
+    private boolean isHost(Long classroomId, Long accountId) {
+        return classroomAccountRepository.existsByAccountIdAndClassroomIdAndRole(accountId, classroomId,
+            ClassroomAccountRole.HOST);
     }
 
     private boolean isDuplicate(Long accountId, Long classroomId) {

@@ -4,7 +4,7 @@ import soma.edupimeta.classroom.account.service.domain.ActionStatus;
 
 public interface ClassroomAccountQueryRepository {
 
-    Boolean updateActionStatusForClassroom(Long classroomId);
+    Long updateActionStatusForClassroom(Long classroomId);
 
     Boolean updateActionStatusByClassroomIdAndAccountId(Long classroomId, Long accountId, ActionStatus actionStatus);
 }
