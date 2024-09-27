@@ -24,7 +24,7 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
             .selectOne()
             .from(classroomAccount)
             .leftJoin(classroom)
-            .on(classroomAccount.accountId.eq(classroom.id))
+            .on(classroomAccount.classroomId.eq(classroom.id))
             .where(
                 classroomAccount.accountId.eq(accountId),
                 classroomAccount.role.eq(ClassroomAccountRole.HOST),
