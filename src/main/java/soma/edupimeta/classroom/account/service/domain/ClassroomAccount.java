@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class ClassroomAccount {
