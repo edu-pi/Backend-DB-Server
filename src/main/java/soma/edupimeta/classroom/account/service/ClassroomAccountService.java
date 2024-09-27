@@ -53,28 +53,17 @@ public class ClassroomAccountService {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
-        if (isHost(classroomId, accountId)) {
-            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CAN_NOT_UPDATE_ACTION_STATUS);
-        }
+        ClassroomAccount classroomAccount = getClassroomAccount(classroomId, accountId);
 
-        boolean isUpdated = classroomAccountRepository.updateActionStatusByClassroomIdAndAccountId(
-            classroomId,
-            accountId,
-            actionStatus
-        );
-
-        if (!isUpdated) {
-            throw new ClassroomAccountException(ClassroomAccountErrorEnum.ALREADY_UPDATE_ACTION_STATUS);
+        if (classroomAccount.getRole() == ClassroomAccountRole.HOST) {
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.HOST_CAN_NOT_UPDATE_ACTION_STATUS);
         }
+        
+        classroomAccount.updateActionStatus(actionStatus);
     }
 
     private boolean isExistsClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
-    }
-
-    private boolean isHost(Long classroomId, Long accountId) {
-        return classroomAccountRepository.existsByAccountIdAndClassroomIdAndRole(accountId, classroomId,
-            ClassroomAccountRole.HOST);
     }
 
     private boolean isDuplicate(Long accountId, Long classroomId) {
@@ -83,6 +72,11 @@ public class ClassroomAccountService {
 
     private ClassroomAccount addClassroomAccount(ClassroomAccount classroomAccount) {
         return classroomAccountRepository.save(classroomAccount);
+    }
+
+    private ClassroomAccount getClassroomAccount(Long classroomId, Long accountId) {
+        return classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId)
+            .orElseThrow(() -> new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND));
     }
 
 }

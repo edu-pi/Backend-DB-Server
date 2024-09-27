@@ -26,22 +26,4 @@ public class ClassroomAccountQueryRepositoryImpl implements ClassroomAccountQuer
 
     }
 
-    @Override
-    public Boolean updateActionStatusByClassroomIdAndAccountId(
-        Long classroomId,
-        Long accountId,
-        ActionStatus actionStatus
-    ) {
-        long updatedCount = queryFactory
-            .update(classroomAccount)
-            .set(classroomAccount.actionStatus, actionStatus.getType())
-            .where(
-                classroomAccount.classroomId.eq(classroomId),
-                classroomAccount.accountId.eq(accountId)
-            )
-            .execute();
-
-        return updatedCount > 0;
-    }
-
 }

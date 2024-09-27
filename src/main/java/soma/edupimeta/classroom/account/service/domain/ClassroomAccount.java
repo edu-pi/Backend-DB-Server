@@ -49,4 +49,8 @@ public class ClassroomAccount {
         this.role = role;
     }
 
+    public void updateActionStatus(ActionStatus actionStatus) {
+        this.actionStatus = actionStatus.getType();
+    }
+
 }
