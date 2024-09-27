@@ -47,7 +47,10 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
             .from(classroom)
             .leftJoin(classroomAccount)
             .on(classroomAccount.classroomId.eq(classroom.id))
-            .where(classroomAccount.role.eq(role))
+            .where(
+                classroomAccount.accountId.eq(accountId),
+                classroomAccount.role.eq(role)
+            )
             .groupBy(classroom.id)
             .fetch();
     }
