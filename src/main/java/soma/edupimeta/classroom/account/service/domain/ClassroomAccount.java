@@ -50,7 +50,11 @@ public class ClassroomAccount {
     }
 
     public void updateActionStatus(ActionStatus actionStatus) {
-        this.actionStatus = actionStatus.getType();
+        this.actionStatus = actionStatus.getValue();
+    }
+
+    public ActionStatus getActionStatus() {
+        return ActionStatus.fromValue(actionStatus);
     }
 
 }

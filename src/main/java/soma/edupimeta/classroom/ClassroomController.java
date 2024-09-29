@@ -2,17 +2,20 @@ package soma.edupimeta.classroom;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import soma.edupimeta.classroom.account.models.ActionInitializeRequest;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.ClassroomService;
 import soma.edupimeta.classroom.service.domain.Classroom;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ClassroomController implements ClassroomOpenApi {
@@ -37,6 +40,19 @@ public class ClassroomController implements ClassroomOpenApi {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(myClassroomsResponse);
+    }
+
+    @Override
+    @PostMapping("/v1/classroom/action/initialization")
+    public ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
+        log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
+        long updateCount = classroomService.initializeClassroomAccountActionStatus(
+            actionInitializeRequest.getClassroomId()
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(updateCount);
     }
 }
 

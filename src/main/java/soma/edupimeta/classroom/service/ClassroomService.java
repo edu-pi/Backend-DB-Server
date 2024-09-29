@@ -54,11 +54,23 @@ public class ClassroomService {
         return classroomRepository.findMyClassrooms(accountId);
     }
 
+    public Long initializeClassroomAccountActionStatus(Long classroomId) {
+        if (isExistsClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+
+        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
+    }
+
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
         return classroomRepository.existsHostClassroomByAccountIdAndName(
             createClassroomRequest.getAccountId(),
             createClassroomRequest.getName()
         );
+    }
+
+    private boolean isExistsClassroom(Long classroomId) {
+        return !classroomRepository.existsById(classroomId);
     }
 
 }

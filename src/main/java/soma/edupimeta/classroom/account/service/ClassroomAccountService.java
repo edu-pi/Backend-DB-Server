@@ -33,22 +33,15 @@ public class ClassroomAccountService {
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(accountId)
             .classroomId(classroomId)
-            .actionStatus(ActionStatus.ING.getType())
+            .actionStatus(ActionStatus.ING.getValue())
             .role(role)
             .build();
 
         return addClassroomAccount(classroomAccount);
     }
 
-    public Long initializeClassroomAccountActionStatus(Long classroomId) {
-        if (isExistsClassroom(classroomId)) {
-            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
-        }
-
-        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
-    }
-
-    public void changeClassroomAccountActionStatus(Long classroomId, Long accountId, ActionStatus actionStatus) {
+    public ActionStatus changeClassroomAccountActionStatus(Long classroomId, Long accountId,
+        ActionStatus actionStatus) {
         if (isExistsClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
@@ -58,8 +51,10 @@ public class ClassroomAccountService {
         if (classroomAccount.getRole() == ClassroomAccountRole.HOST) {
             throw new ClassroomAccountException(ClassroomAccountErrorEnum.HOST_CAN_NOT_UPDATE_ACTION_STATUS);
         }
-        
+
         classroomAccount.updateActionStatus(actionStatus);
+
+        return classroomAccount.getActionStatus();
     }
 
     private boolean isExistsClassroom(Long classroomId) {

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
-import soma.edupimeta.classroom.account.models.ActionInitializeRequest;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
+import soma.edupimeta.classroom.account.service.domain.ActionStatus;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 
 @Slf4j
@@ -37,24 +37,11 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
     }
 
     @Override
-    @PostMapping("/v1/classroom/action/initialization")
-    public ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
-        log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
-        long updateCount = classroomAccountService.initializeClassroomAccountActionStatus(
-            actionInitializeRequest.getClassroomId()
-        );
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(updateCount);
-    }
-
-    @Override
     @PostMapping("/v1/classroom/account/action")
-    public ResponseEntity<Void> changeClassroomAccountActionStatus(
+    public ResponseEntity<ActionStatus> changeClassroomAccountActionStatus(
         @RequestBody ActionChangeRequest actionChangeRequest
     ) {
-        classroomAccountService.changeClassroomAccountActionStatus(
+        ActionStatus actionStatus = classroomAccountService.changeClassroomAccountActionStatus(
             actionChangeRequest.getClassroomId(),
             actionChangeRequest.getAccountId(),
             actionChangeRequest.getAction()
@@ -62,9 +49,8 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .build();
+            .body(actionStatus);
     }
-
 
 }
 
