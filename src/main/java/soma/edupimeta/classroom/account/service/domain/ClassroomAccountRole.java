@@ -2,6 +2,8 @@ package soma.edupimeta.classroom.account.service.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
+import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
 
 public enum ClassroomAccountRole {
     HOST(1), GUEST(2);
@@ -19,7 +21,7 @@ public enum ClassroomAccountRole {
                 return role;
             }
         }
-        throw new IllegalArgumentException("Invalid value for ClassroomAccountRole: " + value);
+        throw new ClassroomAccountException(ClassroomAccountErrorEnum.INVALID_VALUE);
     }
 
     @JsonValue
