@@ -33,7 +33,7 @@ public class ClassroomAccountService {
         Long classroomId,
         ClassroomAccountRole role
     ) {
-        if (isExistsClassroom(classroomId)) {
+        if (isNotExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
@@ -61,12 +61,20 @@ public class ClassroomAccountService {
         return classroomAccountRepository.findByClassroomId(classroomId);
     }
 
+    public void deleteClassroomAccount(Long classroomAccountId) {
+        if (isNotExistClassroomAccount(classroomAccountId)) {
+            throw new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND);
+        }
+
+        classroomAccountRepository.deleteById(classroomAccountId);
+    }
+
     public ActionStatus changeActionStatusBy(
         Long classroomId,
         Long accountId,
         ActionStatus actionStatus
     ) {
-        if (isExistsClassroom(classroomId)) {
+        if (isNotExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
@@ -81,7 +89,7 @@ public class ClassroomAccountService {
         return classroomAccount.getActionStatus();
     }
 
-    private boolean isExistsClassroom(Long classroomId) {
+    private boolean isNotExistClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
     }
 
@@ -96,6 +104,10 @@ public class ClassroomAccountService {
     private ClassroomAccount getClassroomAccount(Long classroomId, Long accountId) {
         return classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId)
             .orElseThrow(() -> new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND));
+    }
+
+    private boolean isNotExistClassroomAccount(Long classroomAccountId) {
+        return !classroomAccountRepository.existsById(classroomAccountId);
     }
 
 }
