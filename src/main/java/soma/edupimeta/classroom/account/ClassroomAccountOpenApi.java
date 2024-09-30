@@ -29,7 +29,7 @@ public interface ClassroomAccountOpenApi {
         @ApiResponse(responseCode = "200", description = "상태 변환에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "상태를 변경할 수 없습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<ActionStatus> changeClassroomAccountActionStatus(
+    ResponseEntity<ActionStatus> changeActionStatus(
         @RequestBody ActionChangeRequest actionChangeRequest);
 
 }

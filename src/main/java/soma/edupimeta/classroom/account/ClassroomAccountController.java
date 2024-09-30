@@ -36,12 +36,11 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
             .body(classroomAccount);
     }
 
-    @Override
     @PostMapping("/v1/classroom/account/action")
-    public ResponseEntity<ActionStatus> changeClassroomAccountActionStatus(
+    public ResponseEntity<ActionStatus> changeActionStatus(
         @RequestBody ActionChangeRequest actionChangeRequest
     ) {
-        ActionStatus actionStatus = classroomAccountService.changeClassroomAccountActionStatus(
+        ActionStatus actionStatus = classroomAccountService.changeActionStatusBy(
             actionChangeRequest.getClassroomId(),
             actionChangeRequest.getAccountId(),
             actionChangeRequest.getAction()

@@ -40,8 +40,11 @@ public class ClassroomAccountService {
         return addClassroomAccount(classroomAccount);
     }
 
-    public ActionStatus changeClassroomAccountActionStatus(Long classroomId, Long accountId,
-        ActionStatus actionStatus) {
+    public ActionStatus changeActionStatusBy(
+        Long classroomId,
+        Long accountId,
+        ActionStatus actionStatus
+    ) {
         if (isExistsClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
