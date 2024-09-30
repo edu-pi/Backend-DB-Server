@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
+import soma.edupimeta.classroom.models.ClassroomActionInfo;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 
 @Repository
@@ -19,7 +20,6 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
 
     @Override
     public boolean existsHostClassroomByAccountIdAndName(Long accountId, String name) {
-
         Integer fetchOne = queryFactory
             .selectOne()
             .from(classroomAccount)
@@ -50,6 +50,25 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
             .on(classroomAccount.classroomId.eq(classroom.id))
             .where(classroomAccount.accountId.eq(accountId))
             .groupBy(classroom.id)
+            .fetch();
+    }
+
+    @Override
+    public List<ClassroomActionInfo> findClassroomInfo(Long classroomId) {
+        return queryFactory
+            .select(Projections.constructor(
+                ClassroomActionInfo.class,
+                classroomAccount.actionStatus,
+                classroomAccount.id.count().as("count")
+            ))
+            .from(classroom)
+            .leftJoin(classroomAccount)
+            .on(classroomAccount.classroomId.eq(classroom.id))
+            .where(
+                classroom.id.eq(classroomId),
+                classroomAccount.role.eq(ClassroomAccountRole.GUEST)
+            )
+            .groupBy(classroomAccount.actionStatus)
             .fetch();
     }
 }
