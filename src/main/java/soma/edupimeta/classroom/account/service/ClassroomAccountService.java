@@ -1,10 +1,12 @@
 package soma.edupimeta.classroom.account.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
+import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
@@ -38,6 +40,10 @@ public class ClassroomAccountService {
             .build();
 
         return addClassroomAccount(classroomAccount);
+    }
+
+    public List<ClassroomAccountResponse> getAllClassroomAccountsBy(Long classroomId) {
+        return classroomAccountRepository.findByClassroomId(classroomId);
     }
 
     public ActionStatus changeActionStatusBy(

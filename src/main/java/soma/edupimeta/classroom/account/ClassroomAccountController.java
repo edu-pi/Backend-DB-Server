@@ -1,13 +1,17 @@
 package soma.edupimeta.classroom.account;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
+import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
@@ -36,6 +40,18 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
             .body(classroomAccount);
     }
 
+    @Override
+    @GetMapping("/v1/classroom/account")
+    public ResponseEntity<List<ClassroomAccountResponse>> getClassroomAccountsBy(@RequestParam Long classroomId) {
+        List<ClassroomAccountResponse> classroomAccounts = classroomAccountService.getAllClassroomAccountsBy(
+            classroomId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(classroomAccounts);
+    }
+
+    @Override
     @PostMapping("/v1/classroom/account/action")
     public ResponseEntity<ActionStatus> changeActionStatus(
         @RequestBody ActionChangeRequest actionChangeRequest
