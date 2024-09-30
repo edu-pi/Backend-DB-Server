@@ -53,8 +53,17 @@ public class ClassroomService {
         return findMyClassroomsBy(accountId);
     }
 
+    public void deleteClassroom(Long classroomId) {
+        if (isNotExistClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+        deleteAllClassroomAccount(classroomId);
+
+        deleteClassroomBy(classroomId);
+    }
+
     public Long initAllActionStatusBy(Long classroomId) {
-        if (isExistClassroom(classroomId)) {
+        if (isNotExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
@@ -92,8 +101,16 @@ public class ClassroomService {
         return classroomRepository.findMyClassrooms(accountId);
     }
 
-    private boolean isExistClassroom(Long classroomId) {
-        return classroomRepository.existsById(classroomId);
+    private boolean isNotExistClassroom(Long classroomId) {
+        return !classroomRepository.existsById(classroomId);
+    }
+
+    private void deleteAllClassroomAccount(Long classroomId) {
+        classroomAccountRepository.deleteByClassroomId(classroomId);
+    }
+
+    private void deleteClassroomBy(Long classroomId) {
+        classroomRepository.deleteById(classroomId);
     }
 
     private Long initActionStatusBy(Long classroomId) {
