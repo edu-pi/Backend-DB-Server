@@ -4,6 +4,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import soma.edupimeta.account.exception.AccountErrorEnum;
+import soma.edupimeta.account.exception.AccountException;
+import soma.edupimeta.account.service.domain.Account;
+import soma.edupimeta.account.service.repository.AccountRepository;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
@@ -20,26 +24,37 @@ import soma.edupimeta.classroom.service.repository.ClassroomRepository;
 @RequiredArgsConstructor
 public class ClassroomAccountService {
 
+    private final AccountRepository accountRepository;
     private final ClassroomAccountRepository classroomAccountRepository;
     private final ClassroomRepository classroomRepository;
 
-    public ClassroomAccount registerClassroomAccount(Long accountId, Long classroomId, ClassroomAccountRole role) {
+    public ClassroomAccountResponse registerClassroomAccount(
+        String email,
+        Long classroomId,
+        ClassroomAccountRole role
+    ) {
         if (isExistsClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
-        if (isDuplicate(accountId, classroomId)) {
+        Account account = accountRepository.findAccountByEmail(email).orElseThrow(
+            () -> new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH)
+        );
+
+        if (isDuplicate(account.getId(), classroomId)) {
             throw new ClassroomAccountException(ClassroomAccountErrorEnum.ALREADY_REGISTER);
         }
 
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
-            .accountId(accountId)
+            .accountId(account.getId())
             .classroomId(classroomId)
             .actionStatus(ActionStatus.ING.getValue())
             .role(role)
             .build();
 
-        return addClassroomAccount(classroomAccount);
+        addClassroomAccount(classroomAccount);
+
+        return new ClassroomAccountResponse(account, classroomAccount);
     }
 
     public List<ClassroomAccountResponse> getAllClassroomAccountsBy(Long classroomId) {
@@ -74,8 +89,8 @@ public class ClassroomAccountService {
         return classroomAccountRepository.existsByAccountIdAndClassroomId(accountId, classroomId);
     }
 
-    private ClassroomAccount addClassroomAccount(ClassroomAccount classroomAccount) {
-        return classroomAccountRepository.save(classroomAccount);
+    private void addClassroomAccount(ClassroomAccount classroomAccount) {
+        classroomAccountRepository.save(classroomAccount);
     }
 
     private ClassroomAccount getClassroomAccount(Long classroomId, Long accountId) {

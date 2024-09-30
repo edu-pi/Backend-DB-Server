@@ -13,7 +13,6 @@ import soma.edupimeta.classroom.account.models.ActionChangeRequest;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
-import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 
 @Tag(name = "ClassroomAccount", description = "ClassroomAccount API")
 public interface ClassroomAccountOpenApi {
@@ -23,7 +22,7 @@ public interface ClassroomAccountOpenApi {
         @ApiResponse(responseCode = "200", description = "클래스룸 계정 등록에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "이미 등록된 계정입니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<ClassroomAccount> registerClassroomAccount(
+    ResponseEntity<ClassroomAccountResponse> registerClassroomAccount(
         @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest
     );
 

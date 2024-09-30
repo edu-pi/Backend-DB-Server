@@ -15,7 +15,6 @@ import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
-import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
 
 @Slf4j
 @RestController
@@ -26,11 +25,11 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
 
     @Override
     @PostMapping("/v1/classroom/account")
-    public ResponseEntity<ClassroomAccount> registerClassroomAccount(
+    public ResponseEntity<ClassroomAccountResponse> registerClassroomAccount(
         @RequestBody CreateClassroomAccountRequest createClassroomAccountRequest
     ) {
-        ClassroomAccount classroomAccount = classroomAccountService.registerClassroomAccount(
-            createClassroomAccountRequest.getAccountId(),
+        ClassroomAccountResponse classroomAccount = classroomAccountService.registerClassroomAccount(
+            createClassroomAccountRequest.getEmail(),
             createClassroomAccountRequest.getClassroomId(),
             createClassroomAccountRequest.getRole()
         );
