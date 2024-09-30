@@ -33,5 +33,5 @@ public interface ClassroomOpenApi {
         @ApiResponse(responseCode = "200", description = "초기화에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest);
+    ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitializeRequest actionInitializeRequest);
 }

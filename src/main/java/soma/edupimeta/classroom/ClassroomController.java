@@ -42,11 +42,10 @@ public class ClassroomController implements ClassroomOpenApi {
             .body(myClassroomsResponse);
     }
 
-    @Override
     @PostMapping("/v1/classroom/action/initialization")
-    public ResponseEntity<Long> initialization(@RequestBody ActionInitializeRequest actionInitializeRequest) {
+    public ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitializeRequest actionInitializeRequest) {
         log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
-        long updateCount = classroomService.initializeClassroomAccountActionStatus(
+        long updateCount = classroomService.initAllActionStatusBy(
             actionInitializeRequest.getClassroomId()
         );
 

@@ -25,22 +25,19 @@ public class ClassroomService {
     private final ClassroomAccountRepository classroomAccountRepository;
 
     public Classroom createClassroom(CreateClassroomRequest createClassroomRequest) {
-        // AccountId가 같고 Leader로 참여한 classroom 중에 name이 일치하는 것이 있으면
         if (isDuplicatedClassroomName(createClassroomRequest)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NAME_DUPLICATE);
         }
 
-        // 클래스룸 생성
-        Classroom savedClassroom = classroomRepository.save(createClassroomRequest.toEntity());
+        Classroom savedClassroom = addClassroom(createClassroomRequest);
 
-        // 호스트 생성
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(createClassroomRequest.getAccountId())
             .classroomId(savedClassroom.getId())
             .role(ClassroomAccountRole.HOST)
             .build();
 
-        classroomAccountRepository.save(classroomAccount);
+        addClassroomAccount(classroomAccount);
 
         return savedClassroom;
     }
@@ -51,15 +48,15 @@ public class ClassroomService {
             throw new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH);
         }
 
-        return classroomRepository.findMyClassrooms(accountId);
+        return findMyClassroomsBy(accountId);
     }
 
-    public Long initializeClassroomAccountActionStatus(Long classroomId) {
-        if (isExistsClassroom(classroomId)) {
+    public Long initAllActionStatusBy(Long classroomId) {
+        if (isExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
-        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
+        return initActionStatusBy(classroomId);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
@@ -69,8 +66,24 @@ public class ClassroomService {
         );
     }
 
-    private boolean isExistsClassroom(Long classroomId) {
-        return !classroomRepository.existsById(classroomId);
+    private Classroom addClassroom(CreateClassroomRequest createClassroomRequest) {
+        return classroomRepository.save(createClassroomRequest.toEntity());
+    }
+
+    private void addClassroomAccount(ClassroomAccount classroomAccount) {
+        classroomAccountRepository.save(classroomAccount);
+    }
+
+    private List<MyClassroomResponse> findMyClassroomsBy(Long accountId) {
+        return classroomRepository.findMyClassrooms(accountId);
+    }
+
+    private boolean isExistClassroom(Long classroomId) {
+        return classroomRepository.existsById(classroomId);
+    }
+
+    private Long initActionStatusBy(Long classroomId) {
+        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
     }
 
 }
