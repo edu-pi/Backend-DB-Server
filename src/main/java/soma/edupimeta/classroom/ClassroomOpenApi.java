@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import soma.edupimeta.classroom.account.models.ActionInitializeRequest;
+import soma.edupimeta.classroom.account.models.ActionInitRequest;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
@@ -33,5 +33,5 @@ public interface ClassroomOpenApi {
         @ApiResponse(responseCode = "200", description = "초기화에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitializeRequest actionInitializeRequest);
+    ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitializeRequest);
 }

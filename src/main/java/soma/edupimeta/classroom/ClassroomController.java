@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import soma.edupimeta.classroom.account.models.ActionInitializeRequest;
+import soma.edupimeta.classroom.account.models.ActionInitRequest;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.ClassroomService;
@@ -42,11 +42,11 @@ public class ClassroomController implements ClassroomOpenApi {
             .body(myClassroomsResponse);
     }
 
-    @PostMapping("/v1/classroom/action/initialization")
-    public ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitializeRequest actionInitializeRequest) {
-        log.info("Initial classroom id: {}", actionInitializeRequest.getClassroomId());
+    @PostMapping("/v1/classroom/action/init")
+    public ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitRequest) {
+        log.info("Init classroom id: {}", actionInitRequest.getClassroomId());
         long updateCount = classroomService.initAllActionStatusBy(
-            actionInitializeRequest.getClassroomId()
+            actionInitRequest.getClassroomId()
         );
 
         return ResponseEntity
