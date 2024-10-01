@@ -22,10 +22,10 @@ public class ClassroomAccountQueryRepositoryImpl implements ClassroomAccountQuer
     public Long updateActionStatusForClassroom(Long classroomId) {
         return queryFactory
             .update(classroomAccount)
-            .set(classroomAccount.actionStatus, ActionStatus.ING.getValue())
+            .set(classroomAccount.actionStatus, ActionStatus.DEFAULT.getValue())
             .where(
                 classroomAccount.classroomId.eq(classroomId),
-                classroomAccount.actionStatus.ne(ActionStatus.ING.getValue())
+                classroomAccount.actionStatus.ne(ActionStatus.DEFAULT.getValue())
             )
             .execute();
 

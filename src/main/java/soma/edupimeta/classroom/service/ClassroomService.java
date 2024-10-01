@@ -62,14 +62,6 @@ public class ClassroomService {
         deleteClassroomBy(classroomId);
     }
 
-    public Long initAllActionStatusBy(Long classroomId) {
-        if (isNotExistClassroom(classroomId)) {
-            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
-        }
-
-        return initActionStatusBy(classroomId);
-    }
-
     @Transactional(readOnly = true)
     public ClassroomInfoResponse getClassroomInfo(Long classroomId) {
 
@@ -111,10 +103,6 @@ public class ClassroomService {
 
     private void deleteClassroomBy(Long classroomId) {
         classroomRepository.deleteById(classroomId);
-    }
-
-    private Long initActionStatusBy(Long classroomId) {
-        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
     }
 
 }

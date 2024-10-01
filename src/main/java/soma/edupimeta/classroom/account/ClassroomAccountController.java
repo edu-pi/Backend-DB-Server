@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
+import soma.edupimeta.classroom.account.models.ActionInitRequest;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
@@ -59,6 +60,20 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
         return ResponseEntity
             .status(HttpStatus.OK)
             .build();
+
+    }
+
+    @Override
+    @PostMapping("/v1/classroom/action/init")
+    public ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitRequest) {
+        log.info("Init classroom id: {}", actionInitRequest.getClassroomId());
+        long updateCount = classroomAccountService.initAllActionStatusBy(
+            actionInitRequest.getClassroomId()
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(updateCount);
     }
 
     @Override

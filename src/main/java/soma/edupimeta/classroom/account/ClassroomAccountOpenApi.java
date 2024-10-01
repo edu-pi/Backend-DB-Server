@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
+import soma.edupimeta.classroom.account.models.ActionInitRequest;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
@@ -39,6 +40,13 @@ public interface ClassroomAccountOpenApi {
         @ApiResponse(responseCode = "400", description = "클래스룸 계정이 없습니다.", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<Void> deleteClassroomAccount(@RequestParam Long classroomAccountId);
+
+    @Operation(summary = "클래스룸에 포함된 계정의 진척도 상태 초기화", description = "클래스룸에 포함된 계정의 진척도 상태 진행중으로 모두 초기화")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "초기화에 성공했습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitializeRequest);
 
     @Operation(summary = "클래스룸 계정의 진척도 상태 변경", description = "클래스룸 계정의 진척도 상태를 완료, 도움으로 변환")
     @ApiResponses(value = {
