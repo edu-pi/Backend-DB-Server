@@ -11,9 +11,10 @@ import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroom.account.service.repository.ClassroomAccountRepository;
 import soma.edupimeta.classroom.exception.ClassroomErrorEnum;
 import soma.edupimeta.classroom.exception.ClassroomException;
+import soma.edupimeta.classroom.models.ClassroomActionInfo;
+import soma.edupimeta.classroom.models.ClassroomInfoResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
-import soma.edupimeta.classroom.models.MyClassroomsResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 import soma.edupimeta.classroom.service.repository.ClassroomRepository;
 
@@ -26,43 +27,50 @@ public class ClassroomService {
     private final ClassroomAccountRepository classroomAccountRepository;
 
     public Classroom createClassroom(CreateClassroomRequest createClassroomRequest) {
-        // AccountId가 같고 Leader로 참여한 classroom 중에 name이 일치하는 것이 있으면
         if (isDuplicatedClassroomName(createClassroomRequest)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NAME_DUPLICATE);
         }
 
-        // 클래스룸 생성
-        Classroom savedClassroom = classroomRepository.save(createClassroomRequest.toEntity());
+        Classroom savedClassroom = addClassroom(createClassroomRequest);
 
-        // 호스트 생성
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(createClassroomRequest.getAccountId())
             .classroomId(savedClassroom.getId())
             .role(ClassroomAccountRole.HOST)
             .build();
 
-        classroomAccountRepository.save(classroomAccount);
+        addClassroomAccount(classroomAccount);
 
         return savedClassroom;
     }
 
     @Transactional(readOnly = true)
-    public MyClassroomsResponse getMyClassrooms(Long accountId) {
+    public List<MyClassroomResponse> getMyClassrooms(Long accountId) {
         if (accountId == null) {
             throw new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH);
         }
 
-        List<MyClassroomResponse> hosts = classroomRepository.findMyClassroomByClassroomAccountRole(
-            accountId,
-            ClassroomAccountRole.HOST
+        return findMyClassroomsBy(accountId);
+    }
+
+    public Long initAllActionStatusBy(Long classroomId) {
+        if (isExistClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+
+        return initActionStatusBy(classroomId);
+    }
+
+    @Transactional(readOnly = true)
+    public ClassroomInfoResponse getClassroomInfo(Long classroomId) {
+
+        Classroom classroom = classroomRepository.findClassroomById(classroomId).orElseThrow(
+            () -> new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND)
         );
 
-        List<MyClassroomResponse> guests = classroomRepository.findMyClassroomByClassroomAccountRole(
-            accountId,
-            ClassroomAccountRole.GUEST
-        );
+        List<ClassroomActionInfo> classroomActionInfos = classroomRepository.findClassroomInfo(classroomId);
 
-        return new MyClassroomsResponse(hosts, guests);
+        return new ClassroomInfoResponse(classroom.getName(), classroomActionInfos);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {
@@ -70,6 +78,26 @@ public class ClassroomService {
             createClassroomRequest.getAccountId(),
             createClassroomRequest.getName()
         );
+    }
+
+    private Classroom addClassroom(CreateClassroomRequest createClassroomRequest) {
+        return classroomRepository.save(createClassroomRequest.toEntity());
+    }
+
+    private void addClassroomAccount(ClassroomAccount classroomAccount) {
+        classroomAccountRepository.save(classroomAccount);
+    }
+
+    private List<MyClassroomResponse> findMyClassroomsBy(Long accountId) {
+        return classroomRepository.findMyClassrooms(accountId);
+    }
+
+    private boolean isExistClassroom(Long classroomId) {
+        return classroomRepository.existsById(classroomId);
+    }
+
+    private Long initActionStatusBy(Long classroomId) {
+        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
     }
 
 }

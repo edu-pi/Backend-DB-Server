@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class ClassroomAccount {
@@ -29,6 +31,9 @@ public class ClassroomAccount {
     private Long classroomId;
 
     @NotNull
+    private int actionStatus;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ClassroomAccountRole role;
 
@@ -37,10 +42,19 @@ public class ClassroomAccount {
     private LocalDateTime createdAt;
 
     @Builder
-    public ClassroomAccount(Long accountId, Long classroomId, ClassroomAccountRole role) {
+    public ClassroomAccount(Long accountId, Long classroomId, int actionStatus, ClassroomAccountRole role) {
         this.accountId = accountId;
         this.classroomId = classroomId;
+        this.actionStatus = actionStatus;
         this.role = role;
+    }
+
+    public void updateActionStatus(ActionStatus actionStatus) {
+        this.actionStatus = actionStatus.getValue();
+    }
+
+    public ActionStatus getActionStatus() {
+        return ActionStatus.fromValue(actionStatus);
     }
 
 }

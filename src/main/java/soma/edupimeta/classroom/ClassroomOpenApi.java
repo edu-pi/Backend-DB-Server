@@ -5,10 +5,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import soma.edupimeta.classroom.account.models.ActionInitRequest;
+import soma.edupimeta.classroom.models.ClassroomInfoResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
-import soma.edupimeta.classroom.models.MyClassroomsResponse;
+import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
 
 @Tag(name = "Classroom", description = "Classroom API")
@@ -24,5 +28,19 @@ public interface ClassroomOpenApi {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "클래스룸 조회 성공", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<MyClassroomsResponse> getMyClassrooms(Long accountId);
+    ResponseEntity<List<MyClassroomResponse>> getMyClassrooms(Long accountId);
+
+    @Operation(summary = "클래스룸에 포함된 계정의 진척도 상태 초기화", description = "클래스룸에 포함된 계정의 진척도 상태 진행중으로 모두 초기화")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "초기화에 성공했습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitializeRequest);
+
+    @Operation(summary = "클래스룸 이름과 포함된 계정의 action 정보 반환", description = "클래스룸 이름과 포함된 계정의 현재 action 정보 반환")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "정보를 불러오는데 성공헀습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "해당 클래스룸이 없습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<ClassroomInfoResponse> getInfo(@RequestParam Long classroomId);
 }
