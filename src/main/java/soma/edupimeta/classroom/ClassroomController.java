@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.classroom.account.models.ActionInitRequest;
+import soma.edupimeta.classroom.models.ClassroomInfoResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.ClassroomService;
@@ -53,5 +55,16 @@ public class ClassroomController implements ClassroomOpenApi {
             .status(HttpStatus.OK)
             .body(updateCount);
     }
+
+    @Override
+    @GetMapping("/v1/classroom/info")
+    public ResponseEntity<ClassroomInfoResponse> getInfo(@RequestParam Long classroomId) {
+        ClassroomInfoResponse classroomInfo = classroomService.getClassroomInfo(classroomId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(classroomInfo);
+    }
+
 }
 

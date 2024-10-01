@@ -11,6 +11,8 @@ import soma.edupimeta.classroom.account.service.domain.ClassroomAccountRole;
 import soma.edupimeta.classroom.account.service.repository.ClassroomAccountRepository;
 import soma.edupimeta.classroom.exception.ClassroomErrorEnum;
 import soma.edupimeta.classroom.exception.ClassroomException;
+import soma.edupimeta.classroom.models.ClassroomActionInfo;
+import soma.edupimeta.classroom.models.ClassroomInfoResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
@@ -57,6 +59,18 @@ public class ClassroomService {
         }
 
         return initActionStatusBy(classroomId);
+    }
+
+    @Transactional(readOnly = true)
+    public ClassroomInfoResponse getClassroomInfo(Long classroomId) {
+
+        Classroom classroom = classroomRepository.findClassroomById(classroomId).orElseThrow(
+            () -> new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND)
+        );
+
+        List<ClassroomActionInfo> classroomActionInfos = classroomRepository.findClassroomInfo(classroomId);
+
+        return new ClassroomInfoResponse(classroom.getName(), classroomActionInfos);
     }
 
     private Boolean isDuplicatedClassroomName(CreateClassroomRequest createClassroomRequest) {

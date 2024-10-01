@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import soma.edupimeta.classroom.account.models.ActionInitRequest;
+import soma.edupimeta.classroom.models.ClassroomInfoResponse;
 import soma.edupimeta.classroom.models.CreateClassroomRequest;
 import soma.edupimeta.classroom.models.MyClassroomResponse;
 import soma.edupimeta.classroom.service.domain.Classroom;
@@ -34,4 +36,11 @@ public interface ClassroomOpenApi {
         @ApiResponse(responseCode = "400", description = "초기화하는데 실패했습니다.", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<Long> initActionStatusBy(@RequestBody ActionInitRequest actionInitializeRequest);
+
+    @Operation(summary = "클래스룸 이름과 포함된 계정의 action 정보 반환", description = "클래스룸 이름과 포함된 계정의 현재 action 정보 반환")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "정보를 불러오는데 성공헀습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "해당 클래스룸이 없습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<ClassroomInfoResponse> getInfo(@RequestParam Long classroomId);
 }
