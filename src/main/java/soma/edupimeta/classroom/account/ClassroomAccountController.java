@@ -92,5 +92,15 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
             .body(actionStatus);
     }
 
+    @Override
+    @GetMapping("/v1/guest/action/status")
+    public ResponseEntity<ActionStatus> getActionStatus(@RequestParam Long classroomId, @RequestParam Long accountId) {
+        ActionStatus actionStatus = classroomAccountService.getActionStatus(classroomId, accountId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(actionStatus);
+    }
+
 }
 
