@@ -12,4 +12,6 @@ public interface ClassroomAccountRepository
     boolean existsByAccountIdAndClassroomId(Long accountId, Long classroomId);
 
     Optional<ClassroomAccount> findByClassroomIdAndAccountId(Long classroomId, Long accountId);
+
+    void deleteByClassroomId(Long classroomId);
 }
