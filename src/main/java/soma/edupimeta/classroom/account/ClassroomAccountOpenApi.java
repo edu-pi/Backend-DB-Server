@@ -33,12 +33,18 @@ public interface ClassroomAccountOpenApi {
     })
     ResponseEntity<List<ClassroomAccountResponse>> getClassroomAccountsBy(@RequestParam Long classroomId);
 
+    @Operation(summary = "클래스룸 계정 삭제", description = "클래스룸 계정 삭제 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "삭제에 성공했습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "클래스룸 계정이 없습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<Void> deleteClassroomAccount(@RequestParam Long classroomAccountId);
+
     @Operation(summary = "클래스룸 계정의 진척도 상태 변경", description = "클래스룸 계정의 진척도 상태를 완료, 도움으로 변환")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "상태 변환에 성공했습니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "상태를 변경할 수 없습니다.", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity<ActionStatus> changeActionStatus(
-        @RequestBody ActionChangeRequest actionChangeRequest);
+    ResponseEntity<ActionStatus> changeActionStatus(@RequestBody ActionChangeRequest actionChangeRequest);
 
 }
