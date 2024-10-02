@@ -48,7 +48,7 @@ public class ClassroomAccountService {
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
             .accountId(account.getId())
             .classroomId(classroomId)
-            .actionStatus(ActionStatus.ING.getValue())
+            .actionStatus(ActionStatus.DEFAULT.getValue())
             .role(role)
             .build();
 
@@ -67,6 +67,14 @@ public class ClassroomAccountService {
         }
 
         classroomAccountRepository.deleteById(classroomAccountId);
+    }
+
+    public Long initAllActionStatusBy(Long classroomId) {
+        if (isNotExistClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+
+        return initActionStatusBy(classroomId);
     }
 
     public ActionStatus changeActionStatusBy(
@@ -99,6 +107,10 @@ public class ClassroomAccountService {
 
     private void addClassroomAccount(ClassroomAccount classroomAccount) {
         classroomAccountRepository.save(classroomAccount);
+    }
+
+    private Long initActionStatusBy(Long classroomId) {
+        return classroomAccountRepository.updateActionStatusForClassroom(classroomId);
     }
 
     private ClassroomAccount getClassroomAccount(Long classroomId, Long accountId) {
