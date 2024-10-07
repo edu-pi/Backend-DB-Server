@@ -55,4 +55,10 @@ public interface ClassroomAccountOpenApi {
     })
     ResponseEntity<ActionStatus> changeActionStatus(@RequestBody ActionChangeRequest actionChangeRequest);
 
+    @Operation(summary = "클래스룸 계정의 진척도 상태 조회", description = "클래스룸 계정의 진척도 상태 조회")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "상태 조회에 성공했습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "상태를 찾을 수 없습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<ActionStatus> getActionStatus(@RequestParam Long classroomId, @RequestParam Long accountId);
 }

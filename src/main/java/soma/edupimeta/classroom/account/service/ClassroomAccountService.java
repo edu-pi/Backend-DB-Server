@@ -97,6 +97,17 @@ public class ClassroomAccountService {
         return classroomAccount.getActionStatus();
     }
 
+    public ActionStatus getActionStatus(Long classroomId, Long accountId) {
+        if (isNotExistClassroom(classroomId)) {
+            throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
+        }
+
+        ClassroomAccount classroomAccount = getClassroomAccount(classroomId, accountId);
+
+        return classroomAccount.getActionStatus();
+    }
+
+
     private boolean isNotExistClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
     }
