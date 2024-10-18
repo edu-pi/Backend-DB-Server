@@ -6,11 +6,11 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: edupi_db
-  ECS_SERVICE: db
+  ECR_REPOSITORY: edupi_meta
+  ECS_SERVICE: meta
   ECS_CLUSTER: BE-fargate
-  ECS_TASK_DEFINITION: edupi_db.json
-  CONTAINER_NAME: db
+  ECS_TASK_DEFINITION: edupi_meta.json
+  CONTAINER_NAME: meta
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
 
       - name: Copy Secret yml
         env:
-          CREATE_SECRET: ${{secrets.EDUPI_DB_DEV_APPLICATION_YML}}
+          CREATE_SECRET: ${{secrets.EDUPI_META_DEV_APPLICATION_YML}}
           CREATE_SECRET_DIR: src/main/resources
           CREATE_SECRET_DIR_FILE_NAME: application.yml
         run: echo $CREATE_SECRET | base64 --decode > $CREATE_SECRET_DIR/$CREATE_SECRET_DIR_FILE_NAME
