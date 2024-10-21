@@ -1,12 +1,12 @@
 {
   "containerDefinitions": [
     {
-      "name": "db",
-      "image": "590184013289.dkr.ecr.ap-northeast-2.amazonaws.com/edupi_db:latest",
+      "name": "meta",
+      "image": "590184013289.dkr.ecr.ap-northeast-2.amazonaws.com/edupi_meta:latest",
       "cpu": 0,
       "portMappings": [
         {
-          "name": "db-port",
+          "name": "meta-port",
           "containerPort": 8084,
           "hostPort": 8084,
           "protocol": "tcp",
@@ -20,7 +20,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/edupi_db",
+          "awslogs-group": "/ecs/edupi_meta",
           "mode": "non-blocking",
           "awslogs-create-group": "true",
           "max-buffer-size": "25m",
@@ -31,7 +31,7 @@
       "systemControls": []
     }
   ],
-  "family": "edupi_db",
+  "family": "edupi_meta",
   "executionRoleArn": "arn:aws:iam::590184013289:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
   "volumes": [],
