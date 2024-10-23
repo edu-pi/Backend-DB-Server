@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
@@ -34,8 +35,12 @@ public interface AccountOpenApi {
         @ApiResponse(responseCode = "400", description = "중복된 이메일입니다.", content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "500", description = "DB 무결성 위반 오류", content = @Content(mediaType = "application/json")),
     })
-    public ResponseEntity<SignupResponse> saveAccountWithOauth(
+    ResponseEntity<SignupResponse> saveAccountWithOauth(
         @Valid @RequestBody SignupOauthRequest signupOauthRequest);
+
+
+    @Operation(summary = "이메일 중복 확인", description = "해당 이메일로 가입된 회원이 있는지 확인")
+    ResponseEntity<Boolean> isExistsEmail(@RequestParam("email") String email);
 
     @Operation(summary = "유저 토큰 조회", description = "존재하는 토큰인지 조회하는 API")
     @ApiResponses(value = {
@@ -43,6 +48,9 @@ public interface AccountOpenApi {
         @ApiResponse(responseCode = "400", description = "이메일 혹은 비밀번호가 일치하지 않습니다.", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest);
+
+    @Operation(summary = "oauth 회원 로그인", description = "존재하는 회원인지 조회하는 API")
+    ResponseEntity<LoginResponse> login(@Valid @RequestBody EmailRequest emailRequest);
 
     @Operation(summary = "계정 활성화", description = "사용자가 이메일 인증 후 계정을 활성화 하는 API")
     @ApiResponses(value = {

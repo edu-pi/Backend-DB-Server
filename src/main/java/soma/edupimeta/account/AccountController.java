@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
@@ -48,9 +50,30 @@ public class AccountController implements AccountOpenApi {
     }
 
     @Override
+    @GetMapping("/v1/account/check-email")
+    public ResponseEntity<Boolean> isExistsEmail(
+        @RequestParam("email") String email) {
+        boolean exists = accountService.isExistsEmail(email);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(exists);
+    }
+
+    @Override
     @PostMapping("/v1/account/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         Account account = accountService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(LoginResponse.of(account));
+    }
+
+    @Override
+    @PostMapping("/v1/account/login/oauth")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody EmailRequest emailRequest) {
+        Account account = accountService.loginWithOauth(emailRequest.getEmail());
 
         return ResponseEntity
             .status(HttpStatus.OK)
