@@ -54,13 +54,15 @@ public class Account {
     private LocalDateTime lastAccessAt;
 
     @Builder
-    public Account(String email, String password, String name, AccountRole role, String phoneNumber) {
+    public Account(String email, String password, String name, AccountRole role, String phoneNumber,
+        boolean isEnabled) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
         this.phoneNumber = phoneNumber;
-        this.isEnabled = false;
+        this.isEnabled = isEnabled;
+        this.createdAt = LocalDateTime.now();
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {

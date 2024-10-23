@@ -12,6 +12,7 @@ import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.LoginResponse;
+import soma.edupimeta.account.models.SignupOauthRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.models.SignupResponse;
 
@@ -27,6 +28,14 @@ public interface AccountOpenApi {
     })
     ResponseEntity<SignupResponse> saveAccount(@Valid @RequestBody SignupRequest signupRequest);
 
+    @Operation(summary = "oauth 회원가입", description = "사용자가 입력한 회원가입 정보를 DB에 저장하는 API")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "회원가입이 완료되었습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "중복된 이메일입니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "500", description = "DB 무결성 위반 오류", content = @Content(mediaType = "application/json")),
+    })
+    public ResponseEntity<SignupResponse> saveAccountWithOauth(
+        @Valid @RequestBody SignupOauthRequest signupOauthRequest);
 
     @Operation(summary = "유저 토큰 조회", description = "존재하는 토큰인지 조회하는 API")
     @ApiResponses(value = {

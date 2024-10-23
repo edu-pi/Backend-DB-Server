@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import soma.edupimeta.account.exception.AccountException;
 import soma.edupimeta.web.exception.BaseException;
 import soma.edupimeta.web.exception.ErrorEnum;
 import soma.edupimeta.web.models.ErrorResponse;
@@ -15,6 +16,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorResponse> handleServerException(BaseException exception) {
+        printErrorLog(exception);
+
+        ErrorEnum errorEnum = exception.getErrorCode();
+
+        return ResponseEntity
+            .status(errorEnum.getHttpStatus())
+            .body(new ErrorResponse(errorEnum.getCode(), errorEnum.getDetail()));
+    }
+
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<ErrorResponse> handleServerException(AccountException exception) {
         printErrorLog(exception);
 
         ErrorEnum errorEnum = exception.getErrorCode();

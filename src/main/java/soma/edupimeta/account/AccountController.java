@@ -12,6 +12,7 @@ import soma.edupimeta.account.models.AccountActivateResponse;
 import soma.edupimeta.account.models.EmailRequest;
 import soma.edupimeta.account.models.LoginRequest;
 import soma.edupimeta.account.models.LoginResponse;
+import soma.edupimeta.account.models.SignupOauthRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.models.SignupResponse;
 import soma.edupimeta.account.service.AccountService;
@@ -29,6 +30,17 @@ public class AccountController implements AccountOpenApi {
     @PostMapping("/v1/account/signup")
     public ResponseEntity<SignupResponse> saveAccount(@Valid @RequestBody SignupRequest signupRequest) {
         Account account = accountService.signup(signupRequest);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(new SignupResponse(account));
+    }
+
+    @Override
+    @PostMapping("/v1/account/signup/oauth")
+    public ResponseEntity<SignupResponse> saveAccountWithOauth(
+        @Valid @RequestBody SignupOauthRequest signupOauthRequest) {
+        Account account = accountService.signupWithAuth(signupOauthRequest);
 
         return ResponseEntity
             .status(HttpStatus.OK)

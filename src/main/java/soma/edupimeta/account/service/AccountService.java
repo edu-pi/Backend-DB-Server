@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.account.exception.AccountErrorEnum;
 import soma.edupimeta.account.exception.AccountException;
+import soma.edupimeta.account.models.SignupOauthRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.domain.Account;
 import soma.edupimeta.account.service.repository.AccountRepository;
@@ -29,6 +30,17 @@ public class AccountService {
         }
 
         account.encodePassword();
+        return addAccount(account);
+    }
+
+    public Account signupWithAuth(SignupOauthRequest signupOauthRequest) {
+        Account account = signupOauthRequest.toEntity();
+
+        // 이메일 중복 체크
+        if (isExists(account.getEmail())) {
+            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
+        }
+
         return addAccount(account);
     }
 
