@@ -25,7 +25,7 @@ public class AccountService {
         Account account = signupRequest.toEntity();
 
         // 이메일 중복 체크
-        if (isExistsEmail(account.getEmail())) {
+        if (isExistsEmailBySocial(account.getEmail(), false)) {
             throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
@@ -37,7 +37,7 @@ public class AccountService {
         Account account = signupOauthRequest.toEntity();
 
         // 이메일 중복 체크
-        if (isExistsEmail(account.getEmail())) {
+        if (isExistsEmailBySocial(account.getEmail(), true)) {
             throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
@@ -70,8 +70,13 @@ public class AccountService {
         return account.getEmail();
     }
 
-    public boolean isExistsEmail(String email) {
-        return accountRepository.existsByEmail(email);
+    public boolean isExistsEmailBySocial(String email, boolean isSocial) {
+        if (isSocial && accountRepository.existsByEmailAndIsSocialTrue(email)) {
+            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
+        } else if (!isSocial && accountRepository.existsByEmailAndIsSocialFalse(email)) {
+            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
+        }
+        return false;
     }
 
     private Account getMember(String email) {

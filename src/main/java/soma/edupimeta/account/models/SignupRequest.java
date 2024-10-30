@@ -42,6 +42,7 @@ public class SignupRequest {
             .phoneNumber(phoneNumber)
             .role(AccountRole.USER)
             .isEnabled(false)   // 이메일 인증 전이므로 비활성화
+            .isSocial(false)
             .build();
     }
 }

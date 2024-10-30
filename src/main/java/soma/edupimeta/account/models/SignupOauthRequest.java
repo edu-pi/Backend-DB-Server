@@ -34,6 +34,7 @@ public class SignupOauthRequest {
             .phoneNumber("010-0000-0000")
             .role(AccountRole.USER)
             .isEnabled(true)
+            .isSocial(true)
             .build();
     }
 

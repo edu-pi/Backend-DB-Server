@@ -52,8 +52,8 @@ public class AccountController implements AccountOpenApi {
     @Override
     @GetMapping("/v1/account/check-email")
     public ResponseEntity<Boolean> isExistsEmail(
-        @RequestParam("email") String email) {
-        boolean exists = accountService.isExistsEmail(email);
+        @RequestParam("email") String email, @RequestParam("isSocial") boolean isSocial) {
+        boolean exists = accountService.isExistsEmailBySocial(email, isSocial);
 
         return ResponseEntity
             .status(HttpStatus.OK)

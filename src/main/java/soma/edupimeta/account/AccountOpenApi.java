@@ -40,7 +40,8 @@ public interface AccountOpenApi {
 
 
     @Operation(summary = "이메일 중복 확인", description = "해당 이메일로 가입된 회원이 있는지 확인")
-    ResponseEntity<Boolean> isExistsEmail(@RequestParam("email") String email);
+    ResponseEntity<Boolean> isExistsEmail(@RequestParam("email") String email,
+        @RequestParam("isSocial") boolean isSocial);
 
     @Operation(summary = "유저 토큰 조회", description = "존재하는 토큰인지 조회하는 API")
     @ApiResponses(value = {
