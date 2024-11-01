@@ -25,7 +25,7 @@ public class AccountService {
         Account account = signupRequest.toEntity();
 
         // 이메일 중복 체크
-        if (isExistsEmailBySocial(account.getEmail(), false)) {
+        if (isExistsEmail(account.getEmail())) {
             throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
@@ -37,7 +37,7 @@ public class AccountService {
         Account account = signupOauthRequest.toEntity();
 
         // 이메일 중복 체크
-        if (isExistsEmailBySocial(account.getEmail(), true)) {
+        if (isExistsEmail(account.getEmail())) {
             throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
@@ -63,20 +63,18 @@ public class AccountService {
 
     public String verifyAccountByEmail(String email) {
         Account account = getMember(email);
-
         // 계정 활성
         account.activate();
 
         return account.getEmail();
     }
 
-    public boolean isExistsEmailBySocial(String email, boolean isSocial) {
-        if (isSocial && accountRepository.existsByEmailAndIsSocialTrue(email)) {
-            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
-        } else if (!isSocial && accountRepository.existsByEmailAndIsSocialFalse(email)) {
-            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
-        }
-        return false;
+    public boolean isExistsEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
+
+    public boolean isExistsEmailByProvider(String email, String provider) {
+        return accountRepository.existsByEmailAndProvider(email, provider);
     }
 
     private Account getMember(String email) {

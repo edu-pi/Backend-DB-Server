@@ -13,13 +13,15 @@ public class LoginResponse {
     private Long id;
     private String email;
     private String name;
+    private String provider;
     private AccountRole accountRole;
 
     @Builder
-    public LoginResponse(Long id, String email, String name, AccountRole role) {
+    public LoginResponse(Long id, String email, String name, String provider, AccountRole role) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.provider = provider;
         this.accountRole = role;
     }
 
@@ -28,6 +30,7 @@ public class LoginResponse {
             .id(account.getId())
             .email(account.getEmail())
             .name(account.getName())
+            .provider(account.getProvider())
             .role(account.getRole())
             .build();
     }

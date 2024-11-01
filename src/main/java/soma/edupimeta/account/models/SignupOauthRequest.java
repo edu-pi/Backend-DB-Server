@@ -22,6 +22,8 @@ public class SignupOauthRequest {
 
     private String name;
 
+    private String provider;
+
     @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
         message = "잘못된 형식입니다.")
     private String phoneNumber;
@@ -34,7 +36,7 @@ public class SignupOauthRequest {
             .phoneNumber("010-0000-0000")
             .role(AccountRole.USER)
             .isEnabled(true)
-            .isSocial(true)
+            .provider(provider)
             .build();
     }
 

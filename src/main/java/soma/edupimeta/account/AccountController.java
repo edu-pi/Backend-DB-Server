@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,9 +53,19 @@ public class AccountController implements AccountOpenApi {
     @Override
     @GetMapping("/v1/account/check-email")
     public ResponseEntity<Boolean> isExistsEmail(
-        @RequestParam("email") String email, @RequestParam("isSocial") boolean isSocial) {
-        boolean exists = accountService.isExistsEmailBySocial(email, isSocial);
+        @RequestParam("email") String email) {
+        boolean exists = accountService.isExistsEmail(email);
 
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(exists);
+    }
+
+    @Override
+    @GetMapping("/v1/account/check-email/{provider}")
+    public ResponseEntity<Boolean> isExistsEmailByProvider(@RequestParam("email") String email,
+        @PathVariable(value = "provider") String provider) {
+        boolean exists = accountService.isExistsEmailByProvider(email, provider);
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(exists);

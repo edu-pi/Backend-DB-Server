@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import soma.edupimeta.account.models.AccountActivateResponse;
@@ -40,8 +41,11 @@ public interface AccountOpenApi {
 
 
     @Operation(summary = "이메일 중복 확인", description = "해당 이메일로 가입된 회원이 있는지 확인")
-    ResponseEntity<Boolean> isExistsEmail(@RequestParam("email") String email,
-        @RequestParam("isSocial") boolean isSocial);
+    ResponseEntity<Boolean> isExistsEmail(@RequestParam("email") String email);
+
+    @Operation(summary = "이메일 중복 확인", description = "해당 이메일로 가입된 회원이 있는지 확인")
+    ResponseEntity<Boolean> isExistsEmailByProvider(@RequestParam("email") String email,
+        @PathVariable(value = "provider") String provider);
 
     @Operation(summary = "유저 토큰 조회", description = "존재하는 토큰인지 조회하는 API")
     @ApiResponses(value = {

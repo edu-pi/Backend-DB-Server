@@ -42,9 +42,9 @@ public class Account {
 
     @NotNull
     private Boolean isEnabled;
-    
+
     @NotNull
-    private Boolean isSocial;
+    private String provider;
 
     private String phoneNumber;
 
@@ -59,14 +59,14 @@ public class Account {
 
     @Builder
     public Account(String email, String password, String name, AccountRole role, String phoneNumber,
-        boolean isEnabled, boolean isSocial) {
+        boolean isEnabled, String provider) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
         this.phoneNumber = phoneNumber;
         this.isEnabled = isEnabled;
-        this.isSocial = isSocial;
+        this.provider = provider;
         this.createdAt = LocalDateTime.now();
     }
 
