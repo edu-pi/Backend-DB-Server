@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.edupimeta.account.exception.AccountErrorEnum;
 import soma.edupimeta.account.exception.AccountException;
+import soma.edupimeta.account.models.SignupOauthRequest;
 import soma.edupimeta.account.models.SignupRequest;
 import soma.edupimeta.account.service.domain.Account;
 import soma.edupimeta.account.service.repository.AccountRepository;
@@ -24,11 +25,22 @@ public class AccountService {
         Account account = signupRequest.toEntity();
 
         // 이메일 중복 체크
-        if (isExists(account.getEmail())) {
+        if (isExistsEmail(account.getEmail())) {
             throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
         }
 
         account.encodePassword();
+        return addAccount(account);
+    }
+
+    public Account signupWithAuth(SignupOauthRequest signupOauthRequest) {
+        Account account = signupOauthRequest.toEntity();
+
+        // 이메일 중복 체크
+        if (isExistsEmail(account.getEmail())) {
+            throw new AccountException(AccountErrorEnum.EMAIL_DUPLICATE);
+        }
+
         return addAccount(account);
     }
 
@@ -44,17 +56,25 @@ public class AccountService {
         return account;
     }
 
+    @Transactional(readOnly = true)
+    public Account loginWithOauth(String email) {
+        return getMember(email);
+    }
+
     public String verifyAccountByEmail(String email) {
         Account account = getMember(email);
-
         // 계정 활성
         account.activate();
 
         return account.getEmail();
     }
 
-    private boolean isExists(String email) {
+    public boolean isExistsEmail(String email) {
         return accountRepository.existsByEmail(email);
+    }
+
+    public boolean isExistsEmailByProvider(String email, String provider) {
+        return accountRepository.existsByEmailAndProvider(email, provider);
     }
 
     private Account getMember(String email) {

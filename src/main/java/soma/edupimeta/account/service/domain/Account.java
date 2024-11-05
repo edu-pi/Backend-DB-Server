@@ -43,6 +43,9 @@ public class Account {
     @NotNull
     private Boolean isEnabled;
 
+    @NotNull
+    private String provider;
+
     private String phoneNumber;
 
     @CreationTimestamp
@@ -53,14 +56,18 @@ public class Account {
 
     private LocalDateTime lastAccessAt;
 
+
     @Builder
-    public Account(String email, String password, String name, AccountRole role, String phoneNumber) {
+    public Account(String email, String password, String name, AccountRole role, String phoneNumber,
+        boolean isEnabled, String provider) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
         this.phoneNumber = phoneNumber;
-        this.isEnabled = false;
+        this.isEnabled = isEnabled;
+        this.provider = provider;
+        this.createdAt = LocalDateTime.now();
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
