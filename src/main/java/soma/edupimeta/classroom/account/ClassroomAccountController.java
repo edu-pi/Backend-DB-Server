@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
 import soma.edupimeta.classroom.account.models.ActionInitRequest;
+import soma.edupimeta.classroom.account.models.CheckClassroomAccountRole;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.ClassroomAccountService;
@@ -100,6 +101,20 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(actionStatus);
+    }
+
+    @Override
+    @GetMapping("/v1/classroom/account/role")
+    public ResponseEntity<CheckClassroomAccountRole> checkClassroomAccountRole(
+        @RequestParam Long accountId,
+        @RequestParam Long classroomId
+    ) {
+        CheckClassroomAccountRole checkClassroomAccountRole =
+            classroomAccountService.checkClassroomAccountRole(accountId, classroomId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(checkClassroomAccountRole);
     }
 
 }
