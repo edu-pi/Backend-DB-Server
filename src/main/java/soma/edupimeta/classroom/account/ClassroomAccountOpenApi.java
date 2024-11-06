@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import soma.edupimeta.classroom.account.models.ActionChangeRequest;
 import soma.edupimeta.classroom.account.models.ActionInitRequest;
+import soma.edupimeta.classroom.account.models.CheckClassroomAccountRole;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.models.CreateClassroomAccountRequest;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
@@ -61,4 +62,13 @@ public interface ClassroomAccountOpenApi {
         @ApiResponse(responseCode = "400", description = "상태를 찾을 수 없습니다.", content = @Content(mediaType = "application/json")),
     })
     ResponseEntity<ActionStatus> getActionStatus(@RequestParam Long classroomId, @RequestParam Long accountId);
+
+
+    @Operation(summary = "클래스룸 계정의 권한 조회", description = "클래스룸 계정의 권한 조회")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "권한 조회에 성공했습니다.", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "권한을 찾을 수 없습니다.", content = @Content(mediaType = "application/json")),
+    })
+    ResponseEntity<CheckClassroomAccountRole> checkClassroomAccountRole(@RequestParam Long accountId,
+        @RequestParam Long classroomId);
 }

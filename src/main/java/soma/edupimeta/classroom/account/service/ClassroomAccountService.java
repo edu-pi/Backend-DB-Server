@@ -1,6 +1,7 @@
 package soma.edupimeta.classroom.account.service;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import soma.edupimeta.account.service.domain.Account;
 import soma.edupimeta.account.service.repository.AccountRepository;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountErrorEnum;
 import soma.edupimeta.classroom.account.exception.ClassroomAccountException;
+import soma.edupimeta.classroom.account.models.CheckClassroomAccountRole;
 import soma.edupimeta.classroom.account.models.ClassroomAccountResponse;
 import soma.edupimeta.classroom.account.service.domain.ActionStatus;
 import soma.edupimeta.classroom.account.service.domain.ClassroomAccount;
@@ -107,6 +109,17 @@ public class ClassroomAccountService {
         return classroomAccount.getActionStatus();
     }
 
+    public CheckClassroomAccountRole checkClassroomAccountRole(Long accountId, Long classroomId) {
+        Optional<ClassroomAccount> optionalClassroomAccount =
+            classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId);
+
+        if (optionalClassroomAccount.isEmpty()) {
+            return new CheckClassroomAccountRole(false, false);
+        }
+        ClassroomAccount classroomAccount = optionalClassroomAccount.get();
+
+        return new CheckClassroomAccountRole(true, classroomAccount.getRole().equals(ClassroomAccountRole.HOST));
+    }
 
     private boolean isNotExistClassroom(Long classroomId) {
         return !classroomRepository.existsById(classroomId);
