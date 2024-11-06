@@ -48,6 +48,10 @@ public class AccountService {
     public Account login(String email, String password) {
         Account account = getMember(email);
 
+        if (!account.isEnabledAccount()) {
+            throw new AccountException(AccountErrorEnum.NOT_ACTIVATED_EXCEPTION);
+        }
+
         // 비밀번호가 일치하지 않는 경우
         if (validatePassword(password, account.getPassword())) {
             throw new AccountException(AccountErrorEnum.EMAIL_OR_PASSWORD_NOT_MATCH);

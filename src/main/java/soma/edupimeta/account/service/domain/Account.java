@@ -83,4 +83,8 @@ public class Account {
         this.isEnabled = true;
     }
 
+    public boolean isEnabledAccount() {
+        return this.isEnabled;
+    }
+
 }
