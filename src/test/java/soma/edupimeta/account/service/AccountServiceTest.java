@@ -58,6 +58,7 @@ class AccountServiceTest {
 
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
             Account.builder().email("asdf@naver.com").password("asdf1234!").role(AccountRole.USER).name("홍길동")
+                .isEnabled(true)
                 .build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
@@ -109,6 +110,7 @@ class AccountServiceTest {
 
         when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(
             Account.builder().email("asdf@naver.com").password("asdf1234!").role(AccountRole.USER).name("홍길동")
+                .isEnabled(true)
                 .build()));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
