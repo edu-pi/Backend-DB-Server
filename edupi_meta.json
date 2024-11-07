@@ -1,0 +1,50 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "meta",
+      "image": "590184013289.dkr.ecr.ap-northeast-2.amazonaws.com/edupi_meta:latest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "meta-port",
+          "containerPort": 8084,
+          "hostPort": 8084,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/edupi_meta",
+          "mode": "non-blocking",
+          "awslogs-create-group": "true",
+          "max-buffer-size": "25m",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "systemControls": []
+    }
+  ],
+  "family": "edupi_meta",
+  "executionRoleArn": "arn:aws:iam::590184013289:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "status": "ACTIVE",
+  "placementConstraints": [],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "tags": []
+}

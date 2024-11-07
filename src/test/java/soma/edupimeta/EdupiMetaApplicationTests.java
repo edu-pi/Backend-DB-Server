@@ -1,13 +1,13 @@
-package soma.haeya.edupi_db;
+package soma.edupimeta;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EdupiUserApplicationTests {
+class EdupiMetaApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
