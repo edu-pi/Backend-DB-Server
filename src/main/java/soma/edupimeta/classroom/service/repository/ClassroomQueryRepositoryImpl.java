@@ -4,6 +4,7 @@ import static soma.edupimeta.classroom.account.service.domain.QClassroomAccount.
 import static soma.edupimeta.classroom.service.domain.QClassroom.classroom;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +44,15 @@ public class ClassroomQueryRepositoryImpl implements ClassroomQueryRepository {
                 classroom.id,
                 classroom.name,
                 classroomAccount.role,
-                classroomAccount.id.count().as("totalPeople")
+                JPAExpressions
+                    .select(classroomAccount.id.count())
+                    .from(classroomAccount)
+                    .where(classroomAccount.classroomId.eq(classroom.id))
+                    .where(classroomAccount.role.ne(ClassroomAccountRole.HOST))
             ))
             .from(classroom)
             .leftJoin(classroomAccount)
-            .on(classroomAccount.classroomId.eq(classroom.id))
+            .on(classroom.id.eq(classroomAccount.classroomId))
             .where(classroomAccount.accountId.eq(accountId))
             .groupBy(classroom.id)
             .fetch();
