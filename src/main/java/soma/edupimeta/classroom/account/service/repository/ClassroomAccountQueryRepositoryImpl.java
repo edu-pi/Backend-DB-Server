@@ -32,7 +32,7 @@ public class ClassroomAccountQueryRepositoryImpl implements ClassroomAccountQuer
     }
 
     @Override
-    public List<ClassroomAccountResponse> findByClassroomId(Long classroomId) {
+    public List<ClassroomAccountResponse> findAllByClassroomId(Long classroomId) {
         return queryFactory
             .select(Projections.constructor(
                 ClassroomAccountResponse.class,

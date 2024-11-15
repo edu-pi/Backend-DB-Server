@@ -10,5 +10,6 @@ public class ActionChangeRequest {
 
     private Long classroomId;
     private Long accountId;
+    private String code;
     private ActionStatus action;
 }

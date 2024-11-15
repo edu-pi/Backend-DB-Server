@@ -31,16 +31,16 @@ public class ClassroomAccountService {
     private final ClassroomRepository classroomRepository;
 
     public ClassroomAccountResponse registerClassroomAccount(
-        String email,
-        Long classroomId,
-        ClassroomAccountRole role
+            String email,
+            Long classroomId,
+            ClassroomAccountRole role
     ) {
         if (isNotExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
         }
 
         Account account = accountRepository.findAccountByEmail(email).orElseThrow(
-            () -> new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH)
+                () -> new AccountException(AccountErrorEnum.EMAIL_NOT_MATCH)
         );
 
         if (isDuplicate(account.getId(), classroomId)) {
@@ -48,11 +48,11 @@ public class ClassroomAccountService {
         }
 
         ClassroomAccount classroomAccount = ClassroomAccount.builder()
-            .accountId(account.getId())
-            .classroomId(classroomId)
-            .actionStatus(ActionStatus.DEFAULT.getValue())
-            .role(role)
-            .build();
+                .accountId(account.getId())
+                .classroomId(classroomId)
+                .actionStatus(ActionStatus.DEFAULT.getValue())
+                .role(role)
+                .build();
 
         addClassroomAccount(classroomAccount);
 
@@ -60,7 +60,7 @@ public class ClassroomAccountService {
     }
 
     public List<ClassroomAccountResponse> getAllClassroomAccountsBy(Long classroomId) {
-        return classroomAccountRepository.findByClassroomId(classroomId);
+        return classroomAccountRepository.findAllByClassroomId(classroomId);
     }
 
     public void deleteClassroomAccount(Long classroomAccountId) {
@@ -80,9 +80,9 @@ public class ClassroomAccountService {
     }
 
     public ActionStatus changeActionStatusBy(
-        Long classroomId,
-        Long accountId,
-        ActionStatus actionStatus
+            Long classroomId,
+            Long accountId,
+            ActionStatus actionStatus
     ) {
         if (isNotExistClassroom(classroomId)) {
             throw new ClassroomException(ClassroomErrorEnum.CLASSROOM_NOT_FOUND);
@@ -111,7 +111,7 @@ public class ClassroomAccountService {
 
     public CheckClassroomAccountRole checkClassroomAccountRole(Long accountId, Long classroomId) {
         Optional<ClassroomAccount> optionalClassroomAccount =
-            classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId);
+                classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId);
 
         if (optionalClassroomAccount.isEmpty()) {
             return new CheckClassroomAccountRole(false, false);
@@ -119,6 +119,23 @@ public class ClassroomAccountService {
         ClassroomAccount classroomAccount = optionalClassroomAccount.get();
 
         return new CheckClassroomAccountRole(true, classroomAccount.getRole().equals(ClassroomAccountRole.HOST));
+    }
+
+    public Long saveClassroomAccountCode(Long classroomId, Long accountId, String code) {
+        ClassroomAccount classroomAccount = getClassroomAccount(classroomId, accountId);
+
+        classroomAccount.saveCode(code);
+
+        return classroomAccount.getClassroomId();
+    }
+
+    public String getClassroomAccountCode(Long classroomAccountId) {
+        ClassroomAccount classroomAccount = classroomAccountRepository.findById(classroomAccountId)
+                .orElseThrow(
+                        () -> new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND));
+
+        System.out.println("classroomAccount = " + classroomAccount.getCode());
+        return classroomAccount.getCode();
     }
 
     private boolean isNotExistClassroom(Long classroomId) {
@@ -139,7 +156,8 @@ public class ClassroomAccountService {
 
     private ClassroomAccount getClassroomAccount(Long classroomId, Long accountId) {
         return classroomAccountRepository.findByClassroomIdAndAccountId(classroomId, accountId)
-            .orElseThrow(() -> new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND));
+                .orElseThrow(
+                        () -> new ClassroomAccountException(ClassroomAccountErrorEnum.CLASSROOM_ACCOUNT_NOT_FOUND));
     }
 
     private boolean isNotExistClassroomAccount(Long classroomAccountId) {
