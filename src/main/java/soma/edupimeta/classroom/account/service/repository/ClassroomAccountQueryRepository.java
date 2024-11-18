@@ -7,5 +7,5 @@ public interface ClassroomAccountQueryRepository {
 
     Long updateActionStatusForClassroom(Long classroomId);
 
-    List<ClassroomAccountResponse> findByClassroomId(Long classroomId);
+    List<ClassroomAccountResponse> findAllByClassroomId(Long classroomId);
 }
