@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -33,6 +34,10 @@ public class ClassroomAccount {
     @NotNull
     private int actionStatus;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String code;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private ClassroomAccountRole role;
@@ -55,6 +60,10 @@ public class ClassroomAccount {
 
     public ActionStatus getActionStatus() {
         return ActionStatus.fromValue(actionStatus);
+    }
+
+    public void saveCode(String code) {
+        this.code = code;
     }
 
 }

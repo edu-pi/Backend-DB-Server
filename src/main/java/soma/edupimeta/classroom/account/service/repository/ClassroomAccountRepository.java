@@ -1,5 +1,6 @@
 package soma.edupimeta.classroom.account.service.repository;
 
+import jakarta.annotation.Nonnull;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,7 @@ public interface ClassroomAccountRepository
     Optional<ClassroomAccount> findByClassroomIdAndAccountId(Long classroomId, Long accountId);
 
     void deleteByClassroomId(Long classroomId);
+
+    @Nonnull
+    Optional<ClassroomAccount> findById(@Nonnull Long id);
 }

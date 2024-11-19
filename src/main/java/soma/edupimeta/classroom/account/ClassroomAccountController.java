@@ -117,5 +117,26 @@ public class ClassroomAccountController implements ClassroomAccountOpenApi {
             .body(checkClassroomAccountRole);
     }
 
+    @PostMapping("/v1/classroom/account/code")
+    public ResponseEntity<Long> saveClassroomAccountCode(@RequestBody ActionChangeRequest actionChangeRequest) {
+        Long classroomId = classroomAccountService.saveClassroomAccountCode(
+            actionChangeRequest.getClassroomId(),
+            actionChangeRequest.getAccountId(),
+            actionChangeRequest.getCode()
+        );
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(classroomId);
+    }
+
+    @GetMapping("/v1/classroom/account/code")
+    public ResponseEntity<String> saveClassroomAccountCode(@RequestParam Long classroomAccountId) {
+        String code = classroomAccountService.getClassroomAccountCode(classroomAccountId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(code);
+    }
 }
 
